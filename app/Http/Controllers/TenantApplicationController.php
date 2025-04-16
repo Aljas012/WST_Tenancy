@@ -8,6 +8,7 @@ use App\Models\TenantApplication;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\ApplyTenant;
 use App\Notifications\ApprovedTenant;
+use App\Notifications\RejectTenant;
 
 use App\Http\Requests\StoreTenantApplicationRequest;
 use App\Http\Requests\UpdateTenantApplicationRequest;
@@ -22,7 +23,6 @@ class TenantApplicationController extends Controller
         $tenant_application = TenantApplication::with('tenantInfo')->orderBy('id', 'desc')->get();
         return view('centralApp.dashboard', compact('tenant_application'));
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -93,5 +93,19 @@ class TenantApplicationController extends Controller
 
 
         return back()->with('success', 'Tenant Approved Successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $tenantApplication = TenantApplication::findOrFail($id);
+
+        $tenantApplication->delete();
+
+        $tenantEmail = $tenantApplication->email;
+
+        Notification::route('mail', $tenantEmail) 
+        ->notify(new RejectTenant($tenantApplication));
+
+        return response()->json(['dSuccess' => 'Tenant Rejected successfully.']);
     }
 }

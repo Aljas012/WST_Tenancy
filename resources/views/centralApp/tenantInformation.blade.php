@@ -54,10 +54,10 @@
 
                 <table class="table  table-responsive border">
                     <colgroup>
-                        <col width="30%">
-                        <col width="25%">
-                        <col width="25%">
                         <col width="20%">
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="30%">
                     </colgroup>
                     <thead class="dark:text-gray-300 ">
                         <tr>
@@ -84,25 +84,61 @@
                             <td x-text="selectedTenant.tenant_info?.subscription_end_date ?? 'Deadline Free'"></td>
 
                             <td>
-                                <!-- Approve Button for Pending Status -->
-                                <button
-                                    x-show="selectedTenant.tenant_info?.application_status === 'Pending'"
-                                    type="submit"
-                                    class="approve-button"
-                                    x-data="{ loading: false }"
-                                    x-init="$el.closest('form').addEventListener('submit', () => loading = true)"
-                                    x-bind:disabled="loading">
-                                    <template x-if="!loading">
-                                        <span>
-                                            <i class="fas fa-check-circle mr-1"></i> Approve
-                                        </span>
-                                    </template>
-                                    <template x-if="loading">
-                                        <span>
-                                            <i class="fas fa-spinner fa-spin mr-1"></i> Approving...
-                                        </span>
-                                    </template>
-                                </button>
+                                <div style="display: flex; justify-content: start">
+                                    <!-- Approve Button for Pending Status -->
+                                    <button
+                                        x-show="selectedTenant.tenant_info?.application_status === 'Pending'"
+                                        type="submit"
+                                        class="approve-button"
+                                        style="margin-right: 8px;"
+                                        x-data="{ loading: false }"
+                                        x-init="$el.closest('form').addEventListener('submit', () => loading = true)"
+                                        x-bind:disabled="loading">
+
+                                        <template x-if="!loading">
+                                            <span>
+                                                <i class="fas fa-check-circle mr-2"></i> Approve
+                                            </span>
+                                        </template>
+                                        <template x-if="loading">
+                                            <span>
+                                                <i class="fas fa-spinner fa-spin mr-2"></i> Approving...
+                                            </span>
+                                        </template>
+                                    </button>
+
+                                    <!-- Reject Button -->
+                                    <button
+                                        x-show="selectedTenant.tenant_info?.application_status === 'Pending'"
+                                        type="button"
+                                        class="reject-button"
+                                        :disabled="loading"
+                                        @click="
+                                        confirmAction('Reject this tenant application?', () => {
+                                            loading = true;
+                                            rejectTenant(selectedTenant.id)
+                                                .then(() => {
+                                                    loading = false;
+                                                })
+                                                .catch(() => {
+                                                    loading = false;
+                                                });
+                                        })
+                                    "
+                                        x-data="{ loading: false }">
+
+                                        <template x-if="!loading">
+                                            <span>
+                                                <i class="fas fa-times-circle mr-2"></i> Reject
+                                            </span>
+                                        </template>
+                                        <template x-if="loading">
+                                            <span>
+                                                <i class="fas fa-spinner fa-spin mr-2"></i> Rejecting...
+                                            </span>
+                                        </template>
+                                    </button>
+                                </div>
 
                                 <template x-if="selectedTenant.tenant_info?.application_status === 'Approved'">
                                     <div class="flex gap-3">
@@ -151,17 +187,17 @@
                                             class="action-button update"
                                             :disabled="loading"
                                             @click="
-                                            confirmAction('Update subscription?', () => {
-                                                loading = true;
-                                                updateSubscription(selectedTenant.id, selectedTenant.subscription)
-                                                    .then(() => {
-                                                        loading = false;
-                                                    })
-                                                    .catch(() => {
-                                                        loading = false;
-                                                    });
-                                            })
-                                        "
+                                                confirmAction('Update subscription?', () => {
+                                                    loading = true;
+                                                    updateSubscription(selectedTenant.id, selectedTenant.subscription)
+                                                        .then(() => {
+                                                            loading = false;
+                                                        })
+                                                        .catch(() => {
+                                                            loading = false;
+                                                        });
+                                                })
+                                            "
                                             x-data="{ loading: false }">
 
                                             <!-- Normal button content (when not loading) -->
@@ -306,6 +342,30 @@
 
         function deleteTenant(tenant) {
             fetch(`/tenant/${tenant}/delete`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                })
+                .then(res => res.json())
+                .then(data => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: data.dSuccess,
+                        background: '#242830',
+                        color: '#fff',
+                        confirmButtonColor: '#3085d6',
+                    }).finally(() => {
+                        location.reload();
+                    });
+                })
+                .catch(err => console.error(err));
+        }
+
+        function rejectTenant(tenant) {
+            fetch(`/tenant_application/${tenant}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
