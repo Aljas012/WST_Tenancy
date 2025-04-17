@@ -141,8 +141,8 @@
     <script src="dist/js/main.min.js"></script>
 
     <script>
-        var tenantStoreRoute = "";
-        var signInRoute = "";
+        var tenantStoreRoute = "{{ route('tenant_app.store') }}";
+        var signInRoute = "{{ route('tenant_login') }}";
 
         var heroCopy = document.querySelector('.hero-copy');
         var originalHeroContent = heroCopy.innerHTML;

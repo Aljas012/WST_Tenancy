@@ -13,6 +13,8 @@ use Stancl\Tenancy\Jobs;
 use Stancl\Tenancy\Listeners;
 use Stancl\Tenancy\Middleware;
 
+use App\Jobs\CreateTenantAccount;
+
 class TenancyServiceProvider extends ServiceProvider
 {
     // By default, no namespace is used to support the callable array syntax.
@@ -27,6 +29,7 @@ class TenancyServiceProvider extends ServiceProvider
                 JobPipeline::make([
                     Jobs\CreateDatabase::class,
                     Jobs\MigrateDatabase::class,
+                    CreateTenantAccount::class,
                     // Jobs\SeedDatabase::class,
 
                     // Your own jobs to prepare the tenant.

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\TenantAppPageController;
 
 use Illuminate\Support\Facades\Route;
+
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Middleware\PauseDomain;
@@ -27,4 +28,8 @@ Route::middleware([
     PauseDomain::class,
 ])->group(function () {
     Route::get('/', [TenantAppPageController::class, 'index']);
+
+    Route::resource('tenant_app', TenantAppPageController::class);
+    Route::post('tenant_login', [TenantAppPageController::class, 'tenantLogin'])->name('tenant_login'); 
+
 });

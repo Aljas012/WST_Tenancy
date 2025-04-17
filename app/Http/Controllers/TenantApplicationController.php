@@ -76,8 +76,11 @@ class TenantApplicationController extends Controller
 
         $newTenant = Tenant::create([
             'id' => $tenant->id,
-            'domain' =>$tenant->domain,
-            'business' =>$tenant->business,
+            'domain' => $tenant->domain,
+            'business' => $tenant->business,
+            'full_name' => $tenant->full_name,
+            'email' => $tenant->email,
+            'subscription' => $tenant->subscription,
             'subscription_start_date' => $subscriptionStartDate->format('F j, Y'),
             'subscription_end_date' => $subscriptionEndDate ? $subscriptionEndDate->format('F j, Y') : null,
         ]);
@@ -85,12 +88,6 @@ class TenantApplicationController extends Controller
         $newTenant->domains()->create([
             'domain' => $tenant->domain . '.localhost',
         ]);
-
-        $tenantEmail = $tenant->email;
-
-        Notification::route('mail', $tenantEmail) 
-        ->notify(new ApprovedTenant($tenant));
-
 
         return back()->with('success', 'Tenant Approved Successfully!');
     }

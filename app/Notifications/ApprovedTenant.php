@@ -13,11 +13,12 @@ class ApprovedTenant extends Notification
 
     protected $tenant;
     protected $tenantInfo;
+    protected $password;
 
-    public function __construct($tenant)
+    public function __construct($tenant, $password)
     {
         $this->tenant = $tenant;
-        $this->tenantInfo = $tenant->tenantInfo;
+        $this->password = $password;
     }
 
     public function via(object $notifiable): array
@@ -35,12 +36,18 @@ class ApprovedTenant extends Notification
 
             ->greeting('Hi ' . $this->tenant->full_name . ',')
             ->line('Congratulations! Your application has been successfully approved.')
-           
+
             ->line('Application ID: ' . $this->tenant->id)
             ->line('Your domain is: ' . $this->tenant->domain . '.localhost:8000')
             ->line('Subscription Plan: ' . $this->tenant->subscription)
-            ->line('Subscription Started: ' . ($this->tenantInfo->subscription_start_date ?? 'Not Set'))
-            ->line('Subscription will end: ' . ($this->tenantInfo->subscription_end_date ?? 'Deadline Free'))
+            ->line('Subscription Started: ' . ($this->tenant->subscription_start_date ?? 'Not Set'))
+            ->line('Subscription will end: ' . ($this->tenant->subscription_end_date ?? 'Deadline Free'))
+
+            ->line('------------------------')
+            ->line('Your login credentials:')
+            ->line('Email: ' . $this->tenant->email)
+            ->line('Password: ' . $this->password)
+            ->line('------------------------')
             
             ->line('Thank you for choosing our service!');
     }

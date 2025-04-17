@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\TenantAppPage;
+use App\Models\User;
 use App\Http\Requests\StoreTenantAppPageRequest;
+use App\Http\Requests\StoreTenantAuthRequest;
 use App\Http\Requests\UpdateTenantAppPageRequest;
 
 class TenantAppPageController extends Controller
@@ -31,38 +33,18 @@ class TenantAppPageController extends Controller
      */
     public function store(StoreTenantAppPageRequest $request)
     {
-        //
+        $validate = $request->validated();
+        User::create($validate);
+
+        return back()->with('success', 'Account Created Successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(TenantAppPage $tenantAppPage)
+    public function tenantLogin(StoreTenantAuthRequest $request)
     {
-        //
-    }
+        $request->authenticate();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TenantAppPage $tenantAppPage)
-    {
-        //
-    }
+        $request->session()->regenerate();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTenantAppPageRequest $request, TenantAppPage $tenantAppPage)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(TenantAppPage $tenantAppPage)
-    {
-        //
+        return 'Huhuay';
     }
 }
