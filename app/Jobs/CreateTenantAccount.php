@@ -37,6 +37,7 @@ class CreateTenantAccount implements ShouldQueue
         User::create([
             'name' =>  $name,
             'email' => $email,
+            'role' => 'admin',
             'password' => Hash::make($password),
         ]);
 

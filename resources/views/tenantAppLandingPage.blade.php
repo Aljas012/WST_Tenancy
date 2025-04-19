@@ -49,15 +49,15 @@
 
     <div class="body-wrap">
         <main>
-            <section class="hero ">
-                <div class="container" style="height: 30rem; padding-top:3rem">
+            <section class="hero " style="padding-top: 5rem;">
+                <div class="container">
                     <div class="hero-inner ">
                         <div class="hero-copy">
                             <h1 class="hero-title mt-0">Welcome, <br>{{$tenant->business}}</h1>
-                            <p class="hero-paragraph" style="text-align: justify;">Tenant ID: {{ $tenant->id }}</p>
+                            <p class="hero-paragraph" style="text-align: justify;">Shift into high gear, track your pay, and rev up your mechanic career. See how you stack up, spot new opportunities, and take control of your earnings.</p>
 
                             <div class="hero-cta">
-                                <a class="button button-primary" href="" id="signUpButton">Sign Up</a>
+                                <a class="button button-primary" href="" id="signUpButton">Be Our Mechanic!</a>
                                 <a class="button" style="border: 2px solid rgb(80, 161, 243); color:rgb(210, 232, 255)!important" href="" id="signInButton">Sign In</a>
                             </div>
                         </div>
@@ -75,6 +75,42 @@
                             <div class="hero-figure-box hero-figure-box-08" data-rotation="-22deg"></div>
                             <div class="hero-figure-box hero-figure-box-09" data-rotation="-52deg"></div>
                             <div class="hero-figure-box hero-figure-box-10" data-rotation="-50deg"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="features section">
+                <div class="container">
+                    <div class="features-inner section-inner has-bottom-divider">
+                        <div class="features-wrap">
+                            <div class="feature text-center is-revealing">
+                                <div class="feature-inner">
+                                    <div class="feature-icon">
+                                        <img src="dist/images/feature-icon-01.svg" alt="Feature 01">
+                                    </div>
+                                    <h4 class="feature-title mt-24">Incentives Analytic</h4>
+                                    <p class="text-sm mb-0">Track and analyze mechanics' incentives to ensure fair, timely rewards, optimize growth, and boost performance.</p>
+                                </div>
+                            </div>
+                            <div class="feature text-center is-revealing">
+                                <div class="feature-inner">
+                                    <div class="feature-icon">
+                                        <img src="dist/images/feature-icon-02.svg" alt="Feature 02">
+                                    </div>
+                                    <h4 class="feature-title mt-24">Salary Computation</h4>
+                                    <p class="text-sm mb-0">Accurately calculate and manage mechanics' salaries, ensuring timely and correct payments based on performance and incentives.</p>
+                                </div>
+                            </div>
+                            <div class="feature text-center is-revealing">
+                                <div class="feature-inner">
+                                    <div class="feature-icon">
+                                        <img src="dist/images/feature-icon-03.svg" alt="Feature 03">
+                                    </div>
+                                    <h4 class="feature-title mt-24">Report Generation</h4>
+                                    <p class="text-sm mb-0">Easily generate detailed reports on mechanics' performance, incentives, and salary, helping you make data-driven decisions.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -163,7 +199,7 @@
             form.appendChild(csrfInput);
 
             var heading = document.createElement('h4');
-            heading.textContent = type === 'signup' ? 'Sign Up' : 'Sign In';
+            heading.textContent = type === 'signup' ? 'Mechanic Application Form' : 'Sign In';
             heading.style.marginTop = '0';
             form.appendChild(heading);
 
@@ -177,13 +213,16 @@
             emailInput.required = true;
             form.appendChild(emailInput);
 
-            var passwordInput = document.createElement('input');
-            passwordInput.type = 'password';
-            passwordInput.className = 'form-control';
-            passwordInput.placeholder = 'Password';
-            passwordInput.name = 'password';
-            passwordInput.required = true;
-            form.appendChild(passwordInput);
+            // Only for Sign In
+            if (type === 'signin') {
+                var passwordInput = document.createElement('input');
+                passwordInput.type = 'password';
+                passwordInput.className = 'form-control';
+                passwordInput.placeholder = 'Password';
+                passwordInput.name = 'password';
+                passwordInput.required = true;
+                form.appendChild(passwordInput);
+            }
 
             // Only for Sign Up
             if (type === 'signup') {
@@ -197,22 +236,36 @@
                     this.value = this.value.replace(/[^a-zA-Z\s.]/g, '');
                 });
 
-                var confirmPasswordInput = document.createElement('input');
-                confirmPasswordInput.type = 'password';
-                confirmPasswordInput.className = 'form-control';
-                confirmPasswordInput.placeholder = 'Confirm Password';
-                confirmPasswordInput.name = 'password_confirmation';
-                confirmPasswordInput.required = true;
+                var contactInput = document.createElement("input");
+                contactInput.type = "tel";
+                contactInput.className = "form-control";
+                contactInput.name = "contact";
+                contactInput.placeholder = "Phone Number";
+                contactInput.required = true;
+                contactInput.pattern = "[0-9]{10,11}";
+                contactInput.setAttribute("maxlength", "11");
+                contactInput.autocomplete = "tel";
+                contactInput.addEventListener("input", function() {
+                    this.value = this.value.replace(/\D/g, "");
+                });
+
+                var addressInput = document.createElement('input');
+                addressInput.type = 'text';
+                addressInput.className = 'form-control';
+                addressInput.placeholder = 'Address';
+                addressInput.name = 'address';
+                addressInput.required = true;
 
                 // Add these fields before the email
                 form.insertBefore(fullNameInput, emailInput);
-                form.appendChild(confirmPasswordInput);
+                form.appendChild(contactInput);
+                form.appendChild(addressInput);
             }
 
             var submitButton = document.createElement('button');
             submitButton.className = 'button button-primary';
             submitButton.type = 'submit';
-            submitButton.textContent = type === 'signup' ? 'Sign Up' : 'Sign In';
+            submitButton.textContent = type === 'signup' ? 'Submit' : 'Sign In';
 
             form.appendChild(submitButton);
 
@@ -224,9 +277,6 @@
             heroCopy.innerHTML = '';
             heroCopy.appendChild(form);
         }
-
-
-
 
         document.addEventListener('click', function(event) {
             var form = document.querySelector('.tenant-form');

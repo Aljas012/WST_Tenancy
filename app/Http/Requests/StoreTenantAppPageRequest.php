@@ -24,7 +24,8 @@ class StoreTenantAppPageRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'contact' => 'required|string|regex:/^\d{10,11}$/',
+            'address' => 'required|string|max:255',
         ];
     }
 }

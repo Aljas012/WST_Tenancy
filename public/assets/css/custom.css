@@ -1,0 +1,15 @@
+/* Add this to your CSS file to control the visibility of the table */
+.table-hidden {
+    visibility: hidden;
+    position: absolute;
+    top: -9999px; /* Move it off-screen */
+    left: -9999px;
+    width: 100%;
+}
+
+.table-visible {
+    visibility: visible;
+    position: relative; /* Ensure it goes back to normal flow */
+    top: auto;
+    left: auto;
+}

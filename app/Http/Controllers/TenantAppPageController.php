@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\TenantAppPage;
+use App\Models\MechanicApplication;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Requests\StoreTenantAppPageRequest;
 use App\Http\Requests\StoreTenantAuthRequest;
@@ -34,17 +36,22 @@ class TenantAppPageController extends Controller
     public function store(StoreTenantAppPageRequest $request)
     {
         $validate = $request->validated();
-        User::create($validate);
+        MechanicApplication::create($validate);
 
-        return back()->with('success', 'Account Created Successfully!');
+        return back()->with('success', 'Form Submitted Successfully!');
     }
 
     public function tenantLogin(StoreTenantAuthRequest $request)
     {
         $request->authenticate();
-
         $request->session()->regenerate();
 
-        return 'Huhuay';
+        $user = Auth::guard('tenant')->user();
+
+        if ($user->role === 'admin') {
+            return redirect()->route('tenant_admin_dashboard');
+        } else {
+            return redirect()->route('tenant_user_dashboard');
+        }
     }
 }

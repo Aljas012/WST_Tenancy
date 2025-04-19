@@ -3,6 +3,11 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\TenantAppPageController;
+use App\Http\Controllers\TenantAdminDashboard;
+use App\Http\Controllers\MechanicController;
+use App\Http\Controllers\SettingsController;
+
+use App\Http\Controllers\TenantUserDashboard;
 
 use Illuminate\Support\Facades\Route;
 
@@ -31,5 +36,20 @@ Route::middleware([
 
     Route::resource('tenant_app', TenantAppPageController::class);
     Route::post('tenant_login', [TenantAppPageController::class, 'tenantLogin'])->name('tenant_login'); 
+
+    Route::middleware(['auth:tenant', 'role:admin'])->group(function () {
+        Route::get('/admin', [TenantAdminDashboard::class, 'index'])->name('tenant_admin_dashboard');
+
+        Route::resource('/mechanic', MechanicController::class);
+        Route::delete('/mechanic/{id}', [MechanicController::class, 'destroy'])->name('mechanic.destroy');
+
+
+
+        Route::resource('/settings', SettingsController::class);
+    });
+    
+    Route::middleware(['auth:tenant', 'role:user'])->group(function () {
+        Route::get('/user', [TenantUserDashboard::class, 'index'])->name('tenant_user_dashboard');
+    });    
 
 });
