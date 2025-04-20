@@ -23,7 +23,6 @@ class UpdateMechanicRequest extends FormRequest
     {
         return [
             'full_name' => 'required|string|max:255',
-            'email' => 'required|email',
             'contact' => 'required|string|max:20',
             'address' => 'required|string|max:255',
         ];

@@ -15,4 +15,9 @@ class Mechanic extends Model
         return $this->belongsTo(MechanicApplication::class);
     }
 
+    public function cars()
+    {
+        return $this->hasMany(Car::class);
+    }
+
 }

@@ -1,6 +1,7 @@
 <div id="mechanicUpdateDelete" class="p-3" style="display: none;">
 
     <div class="container-fluid">
+        <h4 style="font-weight: bold;">Update/Delete Section</h4>
         <form id="mechanicUpdateForm" action="" method="POST">
             @csrf
             @method('PUT')
@@ -16,7 +17,7 @@
                     </div>
                     <div class="form-group">
                         <label for="eaddress">Email Address</label>
-                        <input type="email" class="form-control" id="eaddress" name="email">
+                        <input type="email" class="form-control" id="eaddress" name="email"  readonly style="background-color: transparent;">
                     </div>
                 </div>
 
@@ -49,7 +50,7 @@
             <div>
                 <h5 style="color: rgb(255, 59, 79); font-size: 16px">
                     Deleting this mechanic's information will remove all associated data and cannot be undone. <br>
-                    Please think it twice before clicking.
+                    Please think it twice before deleting.
                 </h5>
             </div>
             <button class="btn btn-danger" id="deleteButton">Delete</button>
@@ -85,27 +86,29 @@
         document.getElementById('deleteButton').addEventListener('click', function() {
             const id = document.getElementById('mechanic_application_id').value;
 
-            fetch(`/mechanic/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    }
-                })
-                .then(res => res.json())
-                .then(data => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: data.dSuccess,
-                        background: '#242830',
-                        color: '#fff',
-                        confirmButtonColor: '#3085d6',
-                    }).finally(() => {
-                        location.reload();
-                    });
-                })
-                .catch(err => console.error(err));
+            confirmAction('Delete this mechanic?', function() {
+                fetch(`/mechanic/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: data.dSuccess,
+                            background: '#242830',
+                            color: '#fff',
+                            confirmButtonColor: '#3085d6',
+                        }).finally(() => {
+                            location.reload();
+                        });
+                    })
+                    .catch(err => console.error(err));
+            });
         });
     </script>
 

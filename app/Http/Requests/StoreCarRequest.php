@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreMechanicRequest extends FormRequest
+class StoreCarRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,10 @@ class StoreMechanicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'mechanic_aapplication_id' => 'required|exists:mechanic_applications,id',
+            'plate_number' => 'required|string|max:8',
+            'brand' => 'required|string|max:22',
+            'model' => 'required|string|max:22',
+            'concern' => 'nullable|string',
         ];
     }
 }

@@ -1,39 +1,43 @@
-<div id="mechanicApproveReject" class="p-3" style="display: none;">
+<div id="carUpdateDelete" class="p-3" style="display: none;">
 
     <div class="container-fluid">
-        <h4 style="font-weight: bold;">Approve/Reject Section</h4>
-        <form action="{{ route('mechanic.store') }}" method="POST">
+        <h4 style="font-weight: bold;">Update/Delete Section</h4>
+        <form id="carUpdateForm" action="" method="POST">
             @csrf
+            @method('PUT')
+
             <div class="row p-3">
                 <div class="col">
 
-                    <input type="hidden" name="mechanic_aapplication_id" id="mechanic_aapplication_id">
+                    <input type="hidden" id="updateCarId" name="cid">
 
                     <div class="form-group" style="margin-bottom: 1rem">
-                        <label for="fname">Full Name</label>
-                        <input type="text" class="form-control" id="fname" readonly style="background-color: transparent;">
+                        <label for="brand">Brand</label>
+                        <input type="text" class="form-control" name="brand" id="updateBrand">
                     </div>
                     <div class="form-group">
-                        <label for="eaddress">Email Address</label>
-                        <input type="email" class="form-control" id="eaddress" readonly style="background-color: transparent;">
+                        <label for="plate_number">Plate Number</label>
+                        <input type="text" class="form-control" name="plate_number" id="updatePlateNumber">
                     </div>
+
                 </div>
 
                 <div class="col">
-                    <div class="form-group" style="margin-bottom: 1rem">
-                        <label for="pnumber">Phone Number</label>
-                        <input type="text" class="form-control" id="pnumber" readonly style="background-color: transparent;">
+                    <div class="form-group" style="margin-bottom: 1.2rem">
+                        <label for="model">Model</label>
+                        <input type="text" class="form-control" name="model" id="updateModel">
                     </div>
                     <div class="form-group">
-                        <label for="address">Address</label>
-                        <input type="text" class="form-control" id="address" readonly style="background-color: transparent;">
+                        <label for="concern">Concern</label>
+                        <textarea type="text" class="form-control" name="concern" rows="1" id="updateConcern"></textarea>
                     </div>
+
                 </div>
             </div>
 
             <div class="d-flex justify-content-end mt-2" style="gap: .5rem;">
-                <button id="closeMechanicApproveRejectButton" type="button" class="btn btn-secondary">Close</button>
-                <button type="submit" class="btn btn-primary" id="approveButton">Approve</button>
+                <button id="closeUpdateDeleteButton" type="button" class="btn btn-secondary">Close</button>
+                <button type="submit" class="btn btn-primary" id="approveButton">Update</button>
             </div>
         </form>
 
@@ -46,12 +50,14 @@
 
             <div>
                 <h5 style="color: rgb(255, 59, 79); font-size: 16px">
-                    Rejecting this mechanic's application will prevent them from being added to the system. <br>
-                    Please think it twice before rejecting.
+                    Deleting this car information will remove all associated data and cannot be undone. <br>
+                    Please think it twice before deleting.
                 </h5>
             </div>
-            <button class="btn btn-danger" id="deleteButtonApproveReject">Reject</button>
+            <button class="btn btn-danger" id="deleteButton">Delete</button>
         </div>
+
+
     </div>
 
     <script>
@@ -73,16 +79,14 @@
                 }
             });
         }
-        
     </script>
 
     <script>
-        document.getElementById('deleteButtonApproveReject').addEventListener('click', function() {
-            const id = document.getElementById('mechanic_aapplication_id').value;
+        document.getElementById('deleteButton').addEventListener('click', function() {
+            const id = document.getElementById('updateCarId').value;
 
-            confirmAction('Reject this mechanic?', function() {
-                console.log('Rejecting mechanic ID:', id);
-                fetch(`/mechanic/${id}`, {
+            confirmAction('Delete this Car?', function() {
+                fetch(`/car/${id}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
@@ -106,5 +110,4 @@
             });
         });
     </script>
-
 </div>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\TenantAppPageController;
 use App\Http\Controllers\TenantAdminDashboard;
 use App\Http\Controllers\MechanicController;
+use App\Http\Controllers\CarController;
 use App\Http\Controllers\SettingsController;
 
 use App\Http\Controllers\TenantUserDashboard;
@@ -40,10 +41,12 @@ Route::middleware([
     Route::middleware(['auth:tenant', 'role:admin'])->group(function () {
         Route::get('/admin', [TenantAdminDashboard::class, 'index'])->name('tenant_admin_dashboard');
 
+        // ROUTE SA MECHANIC MODULE
         Route::resource('/mechanic', MechanicController::class);
         Route::delete('/mechanic/{id}', [MechanicController::class, 'destroy'])->name('mechanic.destroy');
 
-
+        // ROUTE SA SERVICE/CAR MODULE
+        Route::resource('/car', CarController::class);
 
         Route::resource('/settings', SettingsController::class);
     });

@@ -64,7 +64,7 @@
                             </thead>
                             <tbody>
                                 @forelse ($mechanics as $mechanic)
-                                <tr class="mechanic-row"
+                                <tr class="mechanic-row" style="cursor: pointer;"
                                     data-id="{{ $mechanic->id }}"
                                     data-name="{{ $mechanic->name }}"
                                     data-email="{{ $mechanic->email }}"
@@ -123,7 +123,7 @@
                 // Show correct modal based on status
                 if (status === 'Pending') {
                     if (approveRejectModal) {
-                        approveRejectModal.querySelector('#mechanic_application_id').value = id;
+                        approveRejectModal.querySelector('#mechanic_aapplication_id').value = id;
                         approveRejectModal.querySelector('#fname').value = name;
                         approveRejectModal.querySelector('#eaddress').value = email;
                         approveRejectModal.querySelector('#pnumber').value = contact;
