@@ -11,11 +11,11 @@
                     <div class="card-header card-header-primary d-flex justify-content-between align-items-center">
                         <div>
                             <h4 class="card-title">Car Table</h4>
-                            <p class="card-category">List of all cars pending for maintenance</p>
+                            <p class="card-category">List of all cars for maintenance</p>
                         </div>
                         <button type="button" class="btn customBtn" style="display: flex; align-items: center; gap: 8px;" id="openAddCar">
-                            <i class="material-icons">build</i>
-                            Add Car
+                            <i class="material-icons">directions_car</i>
+                            Add Vehicle
                         </button>
                     </div>
                     <div class="card-body table-responsive">

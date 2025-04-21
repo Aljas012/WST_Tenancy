@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('maintenances', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('car_id')
+                ->constrained('cars')
+                ->onDelete('cascade');
+            $table->foreignId('mechanic_id')
+                ->constrained('mechanics')
+                ->onDelete('cascade');
+            $table->string('fix_start')->nullable();
+            $table->string('fix_end')->nullable();
             $table->timestamps();
         });
     }

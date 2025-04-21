@@ -70,8 +70,8 @@
                         </a>
                     </li>
 
-                    <li class="nav-item ">
-                        <a class="nav-link" href="">
+                    <li class="nav-item {{ request()->routeIs('maintenance.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('maintenance.index') }}">
                             <i class="material-icons">handyman</i>
                             <p>Maintenance</p>
                         </a>

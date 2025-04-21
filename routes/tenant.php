@@ -6,6 +6,7 @@ use App\Http\Controllers\TenantAppPageController;
 use App\Http\Controllers\TenantAdminDashboard;
 use App\Http\Controllers\MechanicController;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\SettingsController;
 
 use App\Http\Controllers\TenantUserDashboard;
@@ -36,7 +37,7 @@ Route::middleware([
     Route::get('/', [TenantAppPageController::class, 'index']);
 
     Route::resource('tenant_app', TenantAppPageController::class);
-    Route::post('tenant_login', [TenantAppPageController::class, 'tenantLogin'])->name('tenant_login'); 
+    Route::post('tenant_login', [TenantAppPageController::class, 'tenantLogin'])->name('tenant_login');
 
     Route::middleware(['auth:tenant', 'role:admin'])->group(function () {
         Route::get('/admin', [TenantAdminDashboard::class, 'index'])->name('tenant_admin_dashboard');
@@ -45,14 +46,16 @@ Route::middleware([
         Route::resource('/mechanic', MechanicController::class);
         Route::delete('/mechanic/{id}', [MechanicController::class, 'destroy'])->name('mechanic.destroy');
 
-        // ROUTE SA SERVICE/CAR MODULE
+        // ROUTE SA CAR MODULE
         Route::resource('/car', CarController::class);
+
+        // ROUTE SA MAINTENANCE MODULE
+        Route::resource('/maintenance', MaintenanceController::class);
 
         Route::resource('/settings', SettingsController::class);
     });
-    
+
     Route::middleware(['auth:tenant', 'role:user'])->group(function () {
         Route::get('/user', [TenantUserDashboard::class, 'index'])->name('tenant_user_dashboard');
-    });    
-
+    });
 });

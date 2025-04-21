@@ -18,8 +18,8 @@ class Car extends Model
         'status'
     ];
 
-    public function mechanic()
+    public function maintenances()
     {
-        return $this->belongsTo(Mechanic::class);
+        return $this->hasMany(Maintenance::class);
     }
 }

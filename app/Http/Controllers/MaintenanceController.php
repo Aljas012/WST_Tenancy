@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\maintenance;
-use App\Http\Requests\StoremaintenanceRequest;
-use App\Http\Requests\UpdatemaintenanceRequest;
+use App\Models\Maintenance;
+use App\Models\Car;
+use App\Models\Mechanic;
+
+use App\Http\Requests\StoreMaintenanceRequest;
+use App\Http\Requests\UpdateMaintenanceRequest;
+
 
 class MaintenanceController extends Controller
 {
@@ -13,7 +17,17 @@ class MaintenanceController extends Controller
      */
     public function index()
     {
-        //
+        $maintenances = Maintenance::with(['car', 'mechanic.mechanicApplication'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $cars = Car::whereDoesntHave('maintenances', function ($query) {
+            $query->whereIn('status', ['Under Maintenance', 'Done']);
+        })->get();
+        
+        $mechanics = Mechanic::with('mechanicApplication')->get();
+
+        return view('tenantApp.maintenance', compact('maintenances', 'cars', 'mechanics'));
     }
 
     /**
@@ -27,15 +41,29 @@ class MaintenanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoremaintenanceRequest $request)
+    public function store(StoreMaintenanceRequest $request)
     {
-        //
+        $validated = $request->validated();
+        //dd($validated);
+        $fixStartDate = new \DateTime();
+
+        Maintenance::create([
+            ...$validated,
+            'fix_start' => $fixStartDate->format('F j, Y'),
+            'fix_end' => 'TBA',
+        ]);
+
+        Car::where('id', $validated['car_id'])->update([
+            'status' => 'Under Maintenance',
+        ]);
+
+        return back()->with('success', 'Car associated with Mechanic Successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(maintenance $maintenance)
+    public function show(Maintenance $maintenance)
     {
         //
     }
@@ -43,7 +71,7 @@ class MaintenanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(maintenance $maintenance)
+    public function edit(Maintenance $maintenance)
     {
         //
     }
@@ -51,16 +79,29 @@ class MaintenanceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatemaintenanceRequest $request, maintenance $maintenance)
+    public function update(UpdateMaintenanceRequest $request, $maintenance)
     {
-        //
+        $slctdMaintenance = Maintenance::findOrFail($maintenance);
+        //dd($slctdMaintenance);
+        $fixEndDate = new \DateTime();
+        $slctdMaintenance->fix_end = $fixEndDate->format('F j, Y');
+        $slctdMaintenance->save();
+
+        Car::where('id', $slctdMaintenance->car_id)->update([
+            'status' => 'Done'
+        ]);
+
+        return back()->with('success', 'Maintenance Done Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(maintenance $maintenance)
+    public function destroy($id)
     {
-        //
+        $maintenance = Maintenance::findOrfail($id);
+        $maintenance->delete();
+
+        return response()->json(['dSuccess' => 'Maintenance Removed Successfully!']);
     }
 }
