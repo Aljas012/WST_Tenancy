@@ -11,21 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mechanic_applications', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email'); 
-            $table->string('contact');
-            $table->string('address');
-            $table->string('status')->default('Pending');
+            $table->string('color')->nullable();
+            $table->string('font')->nullable();
+            $table->boolean('layout')->default(false);
+            $table->decimal('incentive_percentage', 5, 2)->nullable();
             $table->timestamps();
         });
     }
-    /** 085118
+
+    /** 2025_04_18_084525_create_settings_table
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('mechanic_applications');
+        Schema::dropIfExists('settings');
     }
 };

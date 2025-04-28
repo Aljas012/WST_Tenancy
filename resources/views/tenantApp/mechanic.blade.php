@@ -2,13 +2,24 @@
 @section('content')
 @section('title', 'Mechanic')
 
+@php
+$colorMapping = [
+'purple' => 'primary',
+'green' => 'success',
+'orange' => 'warning',
+'danger' => 'danger',
+'azure' => 'info',
+];
+$cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
+@endphp
+
 <div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col">
 
                 <div class="card">
-                    <div class="card-header card-header-primary">
+                    <div class="card-header card-header-{{ $cardColor }}">
                         <h4 class="card-title">Mechanic Table</h4>
                         <p class="card-category">List of all mechanics who have signed up</p>
                     </div>
@@ -45,51 +56,53 @@
                         </script>
                         @endif
 
-                        <table class="table table-hover">
-                            <colgroup>
-                                <col width="5%">
-                                <col width="20%">
-                                <col width="20%">
-                                <col width="15%">
-                                <col width="20%">
-                                <col width="10%">
-                            </colgroup>
-                            <thead class="text-warning">
-                                <th>ID</th>
-                                <th>Full Name</th>
-                                <th>Email Address</th>
-                                <th>Phone Number</th>
-                                <th>Address</th>
-                                <th>Status</th>
-                            </thead>
-                            <tbody>
-                                @forelse ($mechanics as $mechanic)
-                                <tr class="mechanic-row" style="cursor: pointer;"
-                                    data-id="{{ $mechanic->id }}"
-                                    data-name="{{ $mechanic->name }}"
-                                    data-email="{{ $mechanic->email }}"
-                                    data-contact="{{ $mechanic->contact }}"
-                                    data-address="{{ $mechanic->address }}"
-                                    data-status="{{ $mechanic->status }}">
+                        <div class="customTableWrapper">
+                            <table class="table table-hover">
+                                <colgroup>
+                                    <col width="5%">
+                                    <col width="20%">
+                                    <col width="20%">
+                                    <col width="15%">
+                                    <col width="20%">
+                                    <col width="10%">
+                                </colgroup>
+                                <thead class="text-warning">
+                                    <th>ID</th>
+                                    <th>Full Name</th>
+                                    <th>Email Address</th>
+                                    <th>Phone Number</th>
+                                    <th>Address</th>
+                                    <th>Status</th>
+                                </thead>
+                                <tbody>
+                                    @forelse ($mechanics as $mechanic)
+                                    <tr class="mechanic-row" style="cursor: pointer;"
+                                        data-id="{{ $mechanic->id }}"
+                                        data-name="{{ $mechanic->name }}"
+                                        data-email="{{ $mechanic->email }}"
+                                        data-contact="{{ $mechanic->contact }}"
+                                        data-address="{{ $mechanic->address }}"
+                                        data-status="{{ $mechanic->status }}">
 
-                                    <td>{{ $mechanic->id }}</td>
-                                    <td>{{ $mechanic->name }}</td>
-                                    <td>{{ $mechanic->email }}</td>
-                                    <td>{{ $mechanic->contact }}</td>
-                                    <td>{{ $mechanic->address }}</td>
-                                    <td class="{{ $mechanic->status === 'Pending' ? 'text-danger' : 'text-success' }}">
-                                        {{ $mechanic->status }}
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="6" class="text-center py-4 text-gray-500 dark:text-gray-400" style="text-align: center;">
-                                        No Mechanic found.
-                                    </td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                        <td>{{ $mechanic->id }}</td>
+                                        <td>{{ $mechanic->name }}</td>
+                                        <td>{{ $mechanic->email }}</td>
+                                        <td>{{ $mechanic->contact }}</td>
+                                        <td>{{ $mechanic->address }}</td>
+                                        <td class="{{ $mechanic->status === 'Pending' ? 'text-danger' : 'text-success' }}">
+                                            {{ $mechanic->status }}
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4 text-gray-500 dark:text-gray-400" style="text-align: center;">
+                                            No Mechanic found.
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

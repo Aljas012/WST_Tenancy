@@ -17,7 +17,7 @@
                     </div>
                     <div class="form-group">
                         <label for="plate_number">Plate Number</label>
-                        <input type="text" class="form-control" name="plate_number" id="updatePlateNumber">
+                        <input type="text" class="form-control" name="plate_number" id="updatePlateNumber" readonly style="background-color: transparent;">
                     </div>
 
                 </div>
@@ -37,7 +37,7 @@
 
             <div class="d-flex justify-content-end mt-2" style="gap: .5rem;">
                 <button id="closeUpdateDeleteButton" type="button" class="btn btn-secondary">Close</button>
-                <button type="submit" class="btn btn-primary" id="approveButton">Update</button>
+                <button type="submit" class="btn btn-{{ $cardColor }}" id="approveButton">Update</button>
             </div>
         </form>
 

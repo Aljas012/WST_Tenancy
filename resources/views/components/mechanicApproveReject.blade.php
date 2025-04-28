@@ -33,7 +33,7 @@
 
             <div class="d-flex justify-content-end mt-2" style="gap: .5rem;">
                 <button id="closeMechanicApproveRejectButton" type="button" class="btn btn-secondary">Close</button>
-                <button type="submit" class="btn btn-primary" id="approveButton">Approve</button>
+                <button type="submit" class="btn btn-{{ $cardColor }}" id="approveButton">Approve</button>
             </div>
         </form>
 
@@ -73,7 +73,6 @@
                 }
             });
         }
-        
     </script>
 
     <script>

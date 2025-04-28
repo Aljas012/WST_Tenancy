@@ -9,4 +9,11 @@ class Settings extends Model
 {
     /** @use HasFactory<\Database\Factories\SettingsFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'color',
+        'font',
+        'incentive_percentage',
+        'layout',
+    ];
 }

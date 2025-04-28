@@ -11,21 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mechanic_applications', function (Blueprint $table) {
+        Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email'); 
-            $table->string('contact');
-            $table->string('address');
-            $table->string('status')->default('Pending');
+            $table->string('category');
+            $table->integer('quantity')->default(0);
+            $table->string('part_number')->nullable();
+            $table->text('description')->nullable();
+            $table->unsignedInteger('price')->default(0);
             $table->timestamps();
         });
     }
-    /** 085118
+
+    /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('mechanic_applications');
+        Schema::dropIfExists('inventories');
     }
 };

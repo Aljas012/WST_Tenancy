@@ -31,14 +31,6 @@ class MaintenanceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreMaintenanceRequest $request)
@@ -61,30 +53,17 @@ class MaintenanceController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Maintenance $maintenance)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Maintenance $maintenance)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateMaintenanceRequest $request, $maintenance)
     {
+        $validated = $request->validated();
+        $validated['fix_end'] = now()->format('F j, Y');
+
         $slctdMaintenance = Maintenance::findOrFail($maintenance);
         //dd($slctdMaintenance);
-        $fixEndDate = new \DateTime();
-        $slctdMaintenance->fix_end = $fixEndDate->format('F j, Y');
+        
+        $slctdMaintenance->update($validated);
         $slctdMaintenance->save();
 
         Car::where('id', $slctdMaintenance->car_id)->update([

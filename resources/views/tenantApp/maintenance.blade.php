@@ -2,18 +2,29 @@
 @section('content')
 @section('title', 'Maintenance')
 
+@php
+$colorMapping = [
+'purple' => 'primary',
+'green' => 'success',
+'orange' => 'warning',
+'danger' => 'danger',
+'azure' => 'info',
+];
+$cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
+@endphp
+
 <div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col">
 
                 <div class="card">
-                    <div class="card-header card-header-primary d-flex justify-content-between align-items-center">
+                    <div class="card-header card-header-{{ $cardColor }} d-flex justify-content-between align-items-center">
                         <div>
                             <h4 class="card-title">Maintenance Table</h4>
                             <p class="card-category">List of all cars undergoing maintenance</p>
                         </div>
-                        <button type="button" class="btn customBtn" style="display: flex; align-items: center; gap: 8px;" id="openMaintenanceCarMechanic">
+                        <button type="button" class="btn btn-{{ $cardColor }}" style="display: flex; align-items: center; gap: 8px;" id="openMaintenanceCarMechanic">
                             <i class="material-icons">handyman</i>
                             Add Maintenance
                         </button>
@@ -51,43 +62,48 @@
                         </script>
                         @endif
 
-                        <table class="table table-hover">
-                            <colgroup>
-                                <col width="5%">
-                                <col width="25%">
-                                <col width="25%">
-                                <col width="15%">
-                                <col width="15%">
-                            </colgroup>
-                            <thead class="text-warning">
-                                <th>ID</th>
-                                <th>Plate Number</th>
-                                <th>Mechanic</th>
-                                <th>Started</th>
-                                <th>Ended</th>
-                            </thead>
-                            <tbody>
-                                @forelse($maintenances as $maintenance)
-                                <tr class="maintenance-row" style="cursor: pointer;"
-                                    data-id="{{ $maintenance->id }}"
-                                    data-plateNumber="{{ $maintenance->car->plate_number }}"
-                                    data-mechanic="{{ $maintenance->mechanic->mechanicApplication->name }}"
-                                    data-fixStart="{{ $maintenance->fix_start }}">
-                                    <td>{{ $maintenance->id }}</td>
-                                    <td>{{ $maintenance->car->plate_number }}</td>
-                                    <td>{{ $maintenance->mechanic->mechanicApplication->name }}</td>
-                                    <td>{{ $maintenance->fix_start }}</td>
-                                    <td>{{ $maintenance->fix_end }}</td>
+                        <div class="customTableWrapper">
+                            <table class="table table-hover">
+                                <colgroup>
+                                    <col width="5%">
+                                    <col width="25%">
+                                    <col width="25%">
+                                    <col width="15%">
+                                    <col width="15%">
+                                </colgroup>
+                                <thead class="text-warning">
+                                    <th>ID</th>
+                                    <th>Plate Number</th>
+                                    <th>Mechanic</th>
+                                    <th>Started</th>
+                                    <th>Ended</th>
+                                </thead>
+                                <tbody>
+                                    @forelse($maintenances as $maintenance)
+                                    <tr class="maintenance-row" style="cursor: pointer;"
+                                        data-id="{{ $maintenance->id }}"
+                                        data-plateNumber="{{ $maintenance->car->plate_number }}"
+                                        data-mechanic="{{ $maintenance->mechanic->mechanicApplication->name }}"
+                                        data-fixStart="{{ $maintenance->fix_start }}"
+                                        data-concern="{{ $maintenance->car->concern }}"
+                                        data-note="{{ $maintenance->note }}">
+                                        <td>{{ $maintenance->id }}</td>
+                                        <td>{{ $maintenance->car->plate_number }}</td>
+                                        <td>{{ $maintenance->mechanic->mechanicApplication->name }}</td>
+                                        <td>{{ $maintenance->fix_start }}</td>
+                                        <td>{{ $maintenance->fix_end }}</td>
 
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="6" class="text-center py-4 text-gray-500 dark:text-gray-400" style="text-align: center;">
-                                        No Maintenance found.
-                                    </td>
-                                </tr>
-                                @endforelse
-                        </table>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4 text-gray-500 dark:text-gray-400" style="text-align: center;">
+                                            No Maintenance found.
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -115,6 +131,11 @@
                 maintenanceCarMechanic.scrollIntoView({
                     behavior: "smooth"
                 });
+
+                maintenanceUpdateDelete.style.display = 'none';
+                maintenanceUpdateDelete.scrollIntoView({
+                    behavior: "smooth"
+                });
             }
         });
 
@@ -124,7 +145,9 @@
                 const plateNumber = this.getAttribute('data-plateNumber');
                 const mechanic = this.getAttribute('data-mechanic');
                 const fixStart = this.getAttribute('data-fixStart');
-                console.log(id, plateNumber, mechanic, fixStart);
+                const concern = this.getAttribute('data-concern');
+                const note = this.getAttribute('data-note');
+
 
                 if (table) {
                     table.classList.add('table-hidden');
@@ -136,6 +159,8 @@
                     maintenanceUpdateDelete.querySelector('#pNumber').value = plateNumber;
                     maintenanceUpdateDelete.querySelector('#mechanic').value = mechanic;
                     maintenanceUpdateDelete.querySelector('#fixStart').value = fixStart;
+                    maintenanceUpdateDelete.querySelector('#concern').value = concern;
+                    maintenanceUpdateDelete.querySelector('#note').value = note;
                     updateForm.action = `/maintenance/${id}`;
 
                     maintenanceUpdateDelete.style.display = 'block';

@@ -17,7 +17,7 @@
 .customBtn {
     background-color: #aa36be !important; /* Base color */
     border-color: #6a1b9a !important; /* Darker border */
-    padding: .8rem 1rem !important;
+    padding: 0.8rem 1rem !important;
     border-radius: 8px;
     box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2) !important; /* Soft shadow */
     transition: all 0.2s ease-in-out; /* Smooth transition */
@@ -27,4 +27,80 @@
     background-color: #ba3cd1 !important; /* Lighter shade on hover */
     border-color: #8e24aa !important; /* Slightly lighter border */
     box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.2) !important; /* Stronger shadow */
+}
+
+.customTableWrapper {
+    max-height: 440px; /* Set fixed height for the table */
+    overflow-y: auto; /* Enable vertical scrolling */
+    position: relative;
+}
+/* Scrollbar for Webkit browsers (Chrome, Edge, Safari) */
+.customTableWrapper::-webkit-scrollbar {
+    width: 7px; /* Adjust width */
+}
+
+.customTableWrapper::-webkit-scrollbar-track {
+    background: #19232f; /* Darker gray for contrast */
+    border-radius: 4px;
+}
+
+.customTableWrapper::-webkit-scrollbar-thumb {
+    background: linear-gradient(60deg, #aa36be, #740088);
+    border-radius: 4px;
+}
+
+/* Fix table header at the top */
+.customTableWrapper thead {
+    position: sticky;
+    top: 0;
+    background-color: rgba(32, 41, 64, 255);
+    z-index: 2;
+}
+
+.productDiv {
+    border: 1px solid #eaeaff;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transition */
+    transform-origin: center;
+
+    margin: 0.8rem 0;
+}
+
+.productDiv:hover {
+    background-color: rgb(33, 44, 73);
+}
+
+.productDiv:active {
+    transform: scale(0.98); /* Slightly shrink the element on click */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add shadow when clicked */
+}
+
+.bodyWrapper {
+    max-height: 430px; /* Set fixed height for the table */
+    overflow-y: auto; /* Enable vertical scrolling */
+    position: relative;
+}
+/* Scrollbar for Webkit browsers (Chrome, Edge, Safari) */
+.bodyWrapper::-webkit-scrollbar {
+    width: 7px; /* Adjust width */
+}
+
+.bodyWrapper::-webkit-scrollbar-track {
+    background: #19232f; /* Darker gray for contrast */
+    border-radius: 4px;
+}
+
+.bodyWrapper::-webkit-scrollbar-thumb {
+    background: linear-gradient(60deg, #aa36be, #740088);
+    border-radius: 4px;
+}
+
+/* Default navbar position (left) */
+.sidebar.sidebar-left {
+    left: 0 !important; /* Position it to the left by default */
+}
+
+/* Navbar when layout is true (right) */
+.sidebar.sidebar-right {
+    right: 0 !important; /* Position it to the right side of the screen */
 }

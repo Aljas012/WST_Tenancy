@@ -1,6 +1,17 @@
 @extends('layouts.tenantPageLayout')
 @section('content')
-@section('title', 'Servicing')
+@section('title', 'Vehicle')
+
+@php
+$colorMapping = [
+'purple' => 'primary',
+'green' => 'success',
+'orange' => 'warning',
+'danger' => 'danger',
+'azure' => 'info',
+];
+$cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
+@endphp
 
 <div class="content">
     <div class="container-fluid">
@@ -8,13 +19,13 @@
             <div class="col">
 
                 <div class="card">
-                    <div class="card-header card-header-primary d-flex justify-content-between align-items-center">
+                    <div class="card-header card-header-{{ $cardColor }} d-flex justify-content-between align-items-center">
                         <div>
-                            <h4 class="card-title">Car Table</h4>
+                            <h4 class="card-title">Vehicle Table</h4>
                             <p class="card-category">List of all cars for maintenance</p>
                         </div>
-                        <button type="button" class="btn customBtn" style="display: flex; align-items: center; gap: 8px;" id="openAddCar">
-                            <i class="material-icons">directions_car</i>
+                        <button type="button" class="btn btn-{{ $cardColor }}" style="display: flex; align-items: center; gap: 8px;" id="openAddCar">
+                            <i class="material-icons">commute</i>
                             Add Vehicle
                         </button>
                     </div>
@@ -51,49 +62,51 @@
                         </script>
                         @endif
 
-                        <table class="table table-hover">
-                            <colgroup>
-                                <col width="5%">
-                                <col width="20%">
-                                <col width="20%">
-                                <col width="20%">
-                                <col width="20%">
-                                <col width="15%">
-                            </colgroup>
-                            <thead class="text-warning">
-                                <th>ID</th>
-                                <th>Brand</th>
-                                <th>Model</th>
-                                <th>Plate Number</th>
-                                <th>Concern</th>
-                                <th>Status</th>
-                            </thead>
-                            <tbody>
-                                @forelse($cars as $car)
-                                <tr class="car-row" style="cursor: pointer;"
-                                    data-id="{{ $car->id }}"
-                                    data-brand="{{ $car->brand }}"
-                                    data-model="{{ $car->model }}"
-                                    data-plate_number="{{ $car->plate_number }}"
-                                    data-concern="{{ $car->concern }}">
+                        <div class="customTableWrapper">
+                            <table class="table table-hover">
+                                <colgroup>
+                                    <col width="5%">
+                                    <col width="20%">
+                                    <col width="20%">
+                                    <col width="20%">
+                                    <col width="20%">
+                                    <col width="15%">
+                                </colgroup>
+                                <thead class="text-warning">
+                                    <th>ID</th>
+                                    <th>Brand</th>
+                                    <th>Model</th>
+                                    <th>Plate Number</th>
+                                    <th>Concern</th>
+                                    <th>Status</th>
+                                </thead>
+                                <tbody>
+                                    @forelse($cars as $car)
+                                    <tr class="car-row" style="cursor: pointer;"
+                                        data-id="{{ $car->id }}"
+                                        data-brand="{{ $car->brand }}"
+                                        data-model="{{ $car->model }}"
+                                        data-plate_number="{{ $car->plate_number }}"
+                                        data-concern="{{ $car->concern }}">
 
-                                    <td>{{ $car->id }}</td>
-                                    <td>{{ $car->brand }}</td>
-                                    <td>{{ $car->model }}</td>
-                                    <td>{{ $car->plate_number }}</td>
-                                    <td>{{ $car->concern }}</td>
-                                    <td class=" {{ $car->status === 'Waiting' ? 'text-danger' : 'text-success' }}">
-                                        {{ $car->status }}
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="6" class="text-center py-4 text-gray-500 dark:text-gray-400" style="text-align: center;">
-                                        No Cars found.
-                                    </td>
-                                </tr>
-                                @endforelse
-                        </table>
+                                        <td>{{ $car->id }}</td>
+                                        <td>{{ $car->brand }}</td>
+                                        <td>{{ $car->model }}</td>
+                                        <td>{{ $car->plate_number }}</td>
+                                        <td>{{ $car->concern }}</td>
+                                        <td class=" {{ $car->status === 'Waiting' ? 'text-danger' : 'text-success' }}">
+                                            {{ $car->status }}
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4 text-gray-500 dark:text-gray-400" style="text-align: center;">
+                                            No Cars Found.
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -119,6 +132,11 @@
             if (addCarSection) {
                 addCarSection.style.display = "block";
                 addCarSection.scrollIntoView({
+                    behavior: "smooth"
+                });
+
+                carUpdateDelete.style.display = 'none';
+                carUpdateDelete.scrollIntoView({
                     behavior: "smooth"
                 });
             }

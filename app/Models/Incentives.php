@@ -5,23 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Maintenance extends Model
+class Incentives extends Model
 {
-    /** @use HasFactory<\Database\Factories\MaintenanceFactory> */
+    /** @use HasFactory<\Database\Factories\IncentivesFactory> */
     use HasFactory;
 
     protected $fillable = [
-        'car_id',
+        'order_id',
         'mechanic_id',
-        'note',
-        'fix_start',
-        'fix_end',
+        'percentage',
+        'incentive',
     ];
 
-
-    public function car()
+    public function order()
     {
-        return $this->belongsTo(Car::class);
+        return $this->belongsTo(Order::class);
     }
 
     public function mechanic()

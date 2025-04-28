@@ -2,11 +2,16 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+
 use App\Http\Controllers\TenantAppPageController;
 use App\Http\Controllers\TenantAdminDashboard;
 use App\Http\Controllers\MechanicController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\IncentivesController;
 use App\Http\Controllers\SettingsController;
 
 use App\Http\Controllers\TenantUserDashboard;
@@ -52,8 +57,28 @@ Route::middleware([
         // ROUTE SA MAINTENANCE MODULE
         Route::resource('/maintenance', MaintenanceController::class);
 
+        // ROUTE SA INVENTORY MODULE
+        Route::resource('/inventory', InventoryController::class);
+
+        // ROUTE SA ORDER MODULE
+        Route::resource('/order', OrderController::class);
+
+        // ROUTE SA INCENTIVES MODULE
+        Route::resource('/incentives', IncentivesController::class);
+
+        // ROUTE SA SETTINGS MODULE
         Route::resource('/settings', SettingsController::class);
+        Route::post('/settings/color', [SettingsController::class, 'updateColor']);
+        Route::post('/settings/font', [SettingsController::class, 'updateFont']);
+        Route::post('/settings/layout', [SettingsController::class, 'updateLayout']);
+        Route::post('/settings/incentive', [SettingsController::class, 'updateIncentive'])->name('settings.updateIncentive');
+
+
+        Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+            ->name('logout');
     });
+
+
 
     Route::middleware(['auth:tenant', 'role:user'])->group(function () {
         Route::get('/user', [TenantUserDashboard::class, 'index'])->name('tenant_user_dashboard');

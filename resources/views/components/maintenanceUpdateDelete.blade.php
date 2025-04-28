@@ -6,7 +6,7 @@
             @csrf
             @method('PUT')
 
-            <div class="row p-3">
+            <div class="row" style="padding: 1rem 1rem 0 1rem;">
                 <div class="col">
 
                     <input type="hidden" name="maintenanceUpdtDltId" id="maintenanceUpdtDltId">
@@ -17,13 +17,18 @@
                     </div>
 
                     <div class="form-group" style="margin-bottom: 1rem">
-                        <label for="brand">Mechanic</label>
-                        <input type="text" class="form-control" name="mechanic" id="mechanic" readonly style="background-color: transparent;">
+                        <label for="concern">Concern</label>
+                        <textarea type="text" class="form-control" name="concern" rows="1" id="concern"></textarea>
                     </div>
 
                 </div>
 
                 <div class="col">
+
+                    <div class="form-group" style="margin-bottom: 1rem">
+                        <label for="brand">Mechanic</label>
+                        <input type="text" class="form-control" name="mechanic" id="mechanic" readonly style="background-color: transparent;">
+                    </div>
 
                     <div class="form-group" style="margin-bottom: 1rem">
                         <label for="brand">Started</label>
@@ -34,9 +39,18 @@
 
             </div>
 
+            <div class="row" style="padding: 0 1rem;">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="note">Note</label>
+                        <textarea type="text" class="form-control" name="note" rows="3" id="note"></textarea>
+                    </div>
+                </div>
+            </div>
+
             <div class="d-flex justify-content-end mt-2" style="gap: .5rem;">
                 <button id="closeMaintenanceUpdateDeleteButton" type="button" class="btn btn-secondary">Close</button>
-                <button type="submit" class="btn btn-primary" id="dnBtn">Done</button>
+                <button type="submit" class="btn btn-{{ $cardColor }}" id="dnBtn">Done</button>
             </div>
         </form>
 

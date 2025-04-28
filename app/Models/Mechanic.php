@@ -24,4 +24,9 @@ class Mechanic extends Model
     {
         return $this->hasMany(Maintenance::class);
     }
+
+    public function incentives()
+    {
+        return $this->hasMany(Incentives::class); 
+    }
 }

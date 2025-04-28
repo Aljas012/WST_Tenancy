@@ -15139,21 +15139,38 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   }
 }
 
-.wrapper {
+/* .wrapper {
   position: relative;
   top: 0;
   height: 100vh;
+} */
+
+.wrapper {
+  display: flex; /* Flexbox ensures no flickering when sidebar switches */
+  height: 100%;
 }
 
+/* Default sidebar style */
 .sidebar {
   position: fixed;
   top: 0;
   bottom: 0;
-  left: 0;
   z-index: 2;
   width: 260px;
   background: #fff;
   box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* Position the sidebar on the left */
+.sidebar.sidebar-left {
+  left: 0 !important;
+  right: auto !important;  /* Reset the right positioning */
+}
+
+/* Position the sidebar on the right */
+.sidebar.sidebar-right {
+  right: 0 !important;
+  left: auto !important;  /* Reset the left positioning */
 }
 
 .sidebar .caret {
@@ -15528,7 +15545,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   background: rgba(200, 200, 200, 0.2);
 }
 
-.main-panel {
+/* .main-panel {
   position: relative;
   float: right;
   width: calc(100% - 260px);
@@ -15574,7 +15591,75 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   -webkit-transition-timing-function: linear, linear, ease;
   transition-timing-function: linear, linear, ease;
   -webkit-overflow-scrolling: touch;
+} */
+
+/* General styles for the main panel */
+.main-panel {
+  position: relative;
+  width: calc(100% - 260px); /* Ensure content fits when sidebar is on the left */
+  transition: 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1); /* Smooth transition */
+  margin-left: 260px; /* Default margin for left sidebar */
 }
+
+/* Ensure content inside the main panel has appropriate padding */
+.main-panel > .content {
+  margin-top: 70px;
+  padding: 30px 15px;
+  min-height: calc(100vh - 123px);
+}
+
+/* Footer styling */
+.main-panel > .footer {
+  border-top: 1px solid #e7e7e7;
+}
+
+/* Navbar styling */
+.main-panel > .navbar {
+  margin-bottom: 0;
+}
+
+.main-panel .header {
+  margin-bottom: 30px;
+}
+
+.main-panel .header .title {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Adjust the layout for perfect scrollbar */
+.perfect-scrollbar-on .sidebar,
+.perfect-scrollbar-on .main-panel {
+  height: 100%;
+  max-height: 100%;
+}
+
+/* Default sidebar styles */
+.sidebar,
+.main-panel,
+.sidebar-wrapper {
+  -webkit-transition-property: top, bottom, width;
+  transition-property: top, bottom, width;
+  -webkit-transition-duration: .2s, .2s, .35s;
+  transition-duration: .2s, .2s, .35s;
+  -webkit-transition-timing-function: linear, linear, ease;
+  transition-timing-function: linear, linear, ease;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* For sidebar on the right, adjust the main-panel */
+.sidebar.sidebar-right + .main-panel {
+  margin-left: 0 !important; /* Remove left margin */
+  margin-right: 260px !important; /* Add right margin for sidebar */
+}
+
+/* For sidebar on the left, restore the left margin */
+.sidebar.sidebar-left + .main-panel {
+  margin-left: 260px !important; /* Add left margin for sidebar */
+  margin-right: 0 !important; /* Remove right margin */
+}
+
+
 
 .visible-on-sidebar-regular {
   display: inline-block !important;
@@ -15620,7 +15705,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   -moz-transition: all .34s;
 }
 
-.fixed-plugin {
+/* .fixed-plugin {
   position: fixed;
   top: 115px;
   right: 0;
@@ -15629,7 +15714,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   z-index: 1031;
   border-radius: 8px 0 0 8px;
   text-align: center;
-}
+} */
 
 .fixed-plugin .fa-cog {
   color: #FFFFFF;
@@ -16572,10 +16657,10 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   padding-top: 0px;
 }
 
-.fixed-plugin .adjustments-line a .badge-colors {
+/* .fixed-plugin .adjustments-line a .badge-colors {
   position: relative;
   top: -2px;
-}
+} */
 
 .fixed-plugin .adjustments-line .togglebutton {
   padding-right: 7px;
@@ -16612,7 +16697,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 
 .fixed-plugin .dropdown-menu>li>a.switch-trigger:hover,
 .fixed-plugin .dropdown-menu>li>a.switch-trigger:focus {
-  background-color: transparent;
+  background-color: transparent!important;
 }
 
 .fixed-plugin .dropdown-menu>li:hover>a.img-holder,
@@ -18713,9 +18798,10 @@ Copyright (c) 2015 Daniel Eden
     position: initial;
   }
 
-  html,
-  body {
-    overflow-x: hidden;
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
   }
 
   .nav-open .menu-on-left .main-panel,

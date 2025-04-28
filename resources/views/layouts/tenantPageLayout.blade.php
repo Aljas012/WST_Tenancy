@@ -34,19 +34,34 @@
     <link href="../assets/demo/demo.css" rel="stylesheet" />
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Lora&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            @if($settings && $settings->font =='poppins') font-family: 'Poppins';
+            @elseif($settings && $settings->font =='roboto') font-family: 'Roboto';
+            @elseif($settings && $settings->font =='lora') font-family: 'Lora';
+            @elseif($settings && $settings->font =='opensans') font-family: 'Open Sans';
+            @elseif($settings && $settings->font =='tahoma') font-family: 'Tahoma';
+            @else font-family: 'Poppins', sans-serif;
+            @endif
+        }
+    </style>
 </head>
+
 
 <body class="dark-edition">
     <div class="wrapper ">
-        <div class="sidebar" data-color="purple" data-background-color="black" data-image="../assets/img/sidebar-2.jpg">
-            <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+        <div class="sidebar {{ $settings && $settings->layout === 1 ? 'sidebar-right' : 'sidebar-left' }}"
+            data-color="{{ $settings->color ?? 'purple' }}"
+            data-background-color="black"
+            data-image="../assets/img/sidebar-2.jpg">
 
-        Tip 2: you can also add an image using data-image tag
-    -->
-            <div class="logo"><a href="http://www.creative-tim.com" class="simple-text logo-normal">
-                    Creative Tim
-                </a></div>
+            <div class="logo">
+                <a href="" class="simple-text logo-normal">
+                    {{ $tenant->domain }}
+                </a>
+            </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li class="nav-item {{ request()->routeIs('tenant_admin_dashboard') ? 'active' : '' }}">
@@ -65,8 +80,8 @@
 
                     <li class="nav-item {{ request()->routeIs('car.*') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('car.index') }}">
-                            <i class="material-icons">directions_car</i>
-                            <p>Car</p>
+                            <i class="material-icons">commute</i>
+                            <p>Vehicle</p>
                         </a>
                     </li>
 
@@ -74,6 +89,13 @@
                         <a class="nav-link" href="{{ route('maintenance.index') }}">
                             <i class="material-icons">handyman</i>
                             <p>Maintenance</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item {{ request()->routeIs('inventory.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('inventory.index') }}">
+                            <i class="material-icons">inventory_2</i>
+                            <p>Inventory</p>
                         </a>
                     </li>
 
@@ -86,12 +108,13 @@
                 </ul>
             </div>
         </div>
+
         <div class="main-panel">
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
-                        <a class="navbar-brand" href="javascript:void(0)">Dashboard</a>
+                        <a class="navbar-brand" href="javascript:void(0)">@yield('title')</a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" data-target="#navigation-example">
                         <span class="sr-only">Toggle navigation</span>
@@ -100,39 +123,31 @@
                         <span class="navbar-toggler-icon icon-bar"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-end">
-                        <form class="navbar-form">
-                            <div class="input-group no-border">
-                                <input type="text" value="" class="form-control" placeholder="Search...">
-                                <button type="submit" class="btn btn-default btn-round btn-just-icon">
-                                    <i class="material-icons">search</i>
-                                    <div class="ripple-container"></div>
-                                </button>
-                            </div>
-                        </form>
                         <ul class="navbar-nav">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">notifications</i>
-                                    <span class="notification">5</span>
-                                    <p class="d-lg-none d-md-block">
-                                        Some Actions
-                                    </p>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="javascript:void(0)">Mike John responded to your email</a>
-                                    <a class="dropdown-item" href="javascript:void(0)">You have 5 new tasks</a>
-                                    <a class="dropdown-item" href="javascript:void(0)">You're now friend with Andrew</a>
-                                    <a class="dropdown-item" href="javascript:void(0)">Another Notification</a>
-                                    <a class="dropdown-item" href="javascript:void(0)">Another One</a>
-                                </div>
-                            </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="javascript:void(0)">
-                                    <i class="material-icons">person</i>
-                                    <p class="d-lg-none d-md-block">
+                                <a class="nav-link" href="javascript:void(0)" id="navbarDropdownMenuLink"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                    style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="text-transform: none; font-size: 13px">
+                                        {{ Auth::user()->name }}
+                                        <br>
+                                        {{ Auth::user()->email }}
+                                    </div>
+
+                                    <i class="material-icons" style="font-size: 26px;">person</i>
+                                    <p class="d-lg-none d-md-block mb-0">
                                         Account
                                     </p>
                                 </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="margin-right: 2rem; background-color:rgb(40, 50, 75);">
+                                    <a class="dropdown-item" href="javascript:void(0)" style="color:rgb(200, 200, 200);">Profile</a>
+                                    <a id="logoutLink" class="dropdown-item" href="" style="color:rgb(200, 200, 200)!important;">Sign Out </a>
+
+                                    <form id="logoutForm" method="POST" action="{{ route('logout') }}" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -141,6 +156,7 @@
             <!-- End Navbar -->
 
             <!-- CONTENT  -->
+
             @yield('content')
             <!-- END OF CONTENT  -->
 
@@ -156,8 +172,6 @@
     <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <!--  Google Maps Plugin    -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
     <!-- Chartist JS -->
     <script src="../assets/js/plugins/chartist.min.js"></script>
     <!--  Notifications Plugin    -->
@@ -166,18 +180,87 @@
     <script src="../assets/js/material-dashboard.js?v=2.1.0"></script>
     <!-- Material Dashboard DEMO methods, don't include it in your project! -->
     <script src="../assets/demo/demo.js"></script>
+
+    <script>
+        document.getElementById('logoutLink').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Sign Out?',
+                icon: 'warning',
+                background: '#242830',
+                color: '#fff',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, log me out!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
+        });
+    </script>
+
+
     <script>
         $(document).ready(function() {
+            var savedColor = <?php echo json_encode($settings->color ?? 'default-color'); ?>;
+
             $().ready(function() {
+
                 $sidebar = $('.sidebar');
-
                 $sidebar_img_container = $sidebar.find('.sidebar-background');
-
                 $full_page = $('.full-page');
-
                 $sidebar_responsive = $('body > .navbar-collapse');
 
                 window_width = $(window).width();
+
+                if (savedColor && savedColor !== 'default-color') {
+                    // Apply color to sidebar
+                    $('.sidebar').attr('data-color', savedColor);
+
+                    // Apply color to full page background
+                    $('.full-page').attr('filter-color', savedColor);
+
+                    // Apply color to responsive sidebar
+                    $('body > .navbar-collapse').attr('data-color', savedColor);
+                }
+
+
+
+                $('.fixed-plugin .active-color span').click(function() {
+                    $full_page_background = $('.full-page-background');
+
+                    var new_color = $(this).data('color');
+
+                    $.ajax({
+                        url: '/settings/color', // Your endpoint where the color is saved
+                        type: 'POST',
+                        data: {
+                            color: new_color,
+                            _token: '{{ csrf_token() }}' // CSRF token for Laravel (if you're using Laravel)
+                        },
+                        success: function(response) {
+                            // Optionally handle the response
+                            console.log('Color saved successfully:', response);
+                        },
+                        error: function(error) {
+                            console.log('Error saving color:', error);
+                        }
+                    });
+
+
+                    $(this).siblings().removeClass('active');
+                    $(this).addClass('active');
+
+                    $('.sidebar').attr('data-color', new_color);
+                    $('.full-page').attr('filter-color', new_color);
+                    $('body > .navbar-collapse').attr('data-color', new_color);
+                });
+
+
 
                 $('.fixed-plugin a').click(function(event) {
                     // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
@@ -190,26 +273,6 @@
                     }
                 });
 
-                $('.fixed-plugin .active-color span').click(function() {
-                    $full_page_background = $('.full-page-background');
-
-                    $(this).siblings().removeClass('active');
-                    $(this).addClass('active');
-
-                    var new_color = $(this).data('color');
-
-                    if ($sidebar.length != 0) {
-                        $sidebar.attr('data-color', new_color);
-                    }
-
-                    if ($full_page.length != 0) {
-                        $full_page.attr('filter-color', new_color);
-                    }
-
-                    if ($sidebar_responsive.length != 0) {
-                        $sidebar_responsive.attr('data-color', new_color);
-                    }
-                });
 
                 $('.fixed-plugin .background-color .badge').click(function() {
                     $(this).siblings().removeClass('active');
@@ -221,6 +284,9 @@
                         $sidebar.attr('data-background-color', new_color);
                     }
                 });
+
+
+
 
                 $('.fixed-plugin .img-holder').click(function() {
                     $full_page_background = $('.full-page-background');
@@ -328,6 +394,113 @@
             });
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fontBadges = document.querySelectorAll('.active-font .badge');
+
+            fontBadges.forEach(function(badge) {
+                badge.addEventListener('click', function() {
+                    const selectedFont = this.getAttribute('data-font');
+
+                    $.ajax({
+                        url: '/settings/font',
+                        type: 'POST',
+                        data: {
+                            font: selectedFont,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            console.log('Font saved successfully:', response);
+
+                            $('.active-font .badge').removeClass('active');
+                            $(badge).addClass('active');
+
+                            document.body.style.fontFamily = selectedFont === 'poppins' ? "'Poppins', sans-serif" :
+                                selectedFont === 'roboto' ? "'Roboto', sans-serif" :
+                                selectedFont === 'lora' ? "'Lora', serif" :
+                                selectedFont === 'opensans' ? "'Open Sans', sans-serif" :
+                                selectedFont === 'tahoma' ? "'Tahoma', sans-serif" : '';
+                        },
+                        error: function(error) {
+                            console.log('Error saving font:', error);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const layoutBadges = document.querySelectorAll('.active-layout .badge');
+
+            layoutBadges.forEach(function(badge) {
+                badge.addEventListener('click', function() {
+                    const selectedLayout = this.getAttribute('data-layout'); // Get the selected layout value
+
+                    $.ajax({
+                        url: '/settings/layout',
+                        type: 'POST',
+                        data: {
+                            layout: selectedLayout,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            console.log('Layout saved successfully:', response);
+
+                            // Update the active state of badges
+                            $('.active-layout .badge').removeClass('active');
+                            $(badge).addClass('active');
+
+                            // Toggle the sidebar layout without page reload
+                            if (selectedLayout === 'left-sidebar') {
+                                // Remove the right sidebar class and apply left sidebar
+                                document.body.classList.remove('right-sidebar');
+                                document.body.classList.add('left-sidebar');
+
+                                // Adjust the main panel's margin for the left sidebar
+                                document.querySelector('.main-panel').style.marginLeft = '260px';
+                                document.querySelector('.main-panel').style.marginRight = '0';
+                            } else if (selectedLayout === 'right-sidebar') {
+                                // Remove the left sidebar class and apply right sidebar
+                                document.body.classList.remove('left-sidebar');
+                                document.body.classList.add('right-sidebar');
+
+                                // Adjust the main panel's margin for the right sidebar
+                                document.querySelector('.main-panel').style.marginLeft = '0';
+                                document.querySelector('.main-panel').style.marginRight = '260px';
+                            }
+
+                            // Show SweetAlert2 confirmation
+                            Swal.fire({
+                                title: 'Layout Changed!',
+                                text: 'Click OK to reload the page.',
+                                icon: 'success',
+                                background: '#242830',
+                                color: '#fff',
+                                showConfirmButton: true,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Reload the page after the user clicks OK
+                                    location.reload();
+                                }
+                            });
+                        },
+                        error: function(error) {
+                            console.log('Error saving layout:', error);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+
+
+
+
+
     <script>
         $(document).ready(function() {
             // Javascript method's body can be found in assets/js/demos.js

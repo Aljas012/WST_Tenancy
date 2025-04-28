@@ -33,7 +33,7 @@
 
             <div class="d-flex justify-content-end mt-2" style="gap: .5rem;">
                 <button id="closeAddCarButton" type="button" class="btn btn-secondary">Close</button>
-                <button type="submit" class="btn btn-primary" id="approveButton">Submit</button>
+                <button type="submit" class="btn btn-{{ $cardColor }}" id="approveButton">Submit</button>
             </div>
         </form>
 

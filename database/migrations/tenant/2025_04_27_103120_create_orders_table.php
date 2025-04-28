@@ -11,17 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('maintenances', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('car_id')
-                ->constrained('cars')
+            $table->foreignId('product_id')
+                ->constrained('inventories')
                 ->onDelete('cascade');
+
             $table->foreignId('mechanic_id')
                 ->constrained('mechanics')
                 ->onDelete('cascade');
-            $table->string('note')->nullable();
-            $table->string('fix_start')->nullable();
-            $table->string('fix_end')->nullable();
+
+            $table->integer('quantity');
+            $table->decimal('total', 10, 2);
+
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('maintenances');
+        Schema::dropIfExists('orders');
     }
 };

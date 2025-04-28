@@ -10,10 +10,10 @@
                     <div class="form-group">
                         <label for="car">Select Car</label>
                         <select class="form-control" name="car_id" id="car">
-                            <option style="color:rgb(125, 125, 125); background-color:rgb(35, 44, 65);" selected disabled>Select a Car to Service</option>
+                            <option style="color:rgb(125, 125, 125); background-color:rgb(40, 50, 75);" selected disabled>Select a Car to Service</option>
                             @foreach ($cars as $car)
-                            <option value="{{ $car->id }}" style="color:rgb(195, 195, 195); background-color:rgb(35, 44, 65);">
-                                {{ $car->plate_number }} - {{ $car->brand }} {{ $car->model }}
+                            <option value="{{ $car->id }}" style="color:rgb(195, 195, 195); background-color:rgb(40, 50, 75);">
+                                {{ $car->plate_number }} - {{ $car->brand }} {{ $car->model }} -  {{ $car->concern }}
                             </option>
                             @endforeach
                         </select>
@@ -25,9 +25,9 @@
                     <div class="form-group">
                         <label for="mechanic">Select Mechanic</label>
                         <select class="form-control" name="mechanic_id" id="mechanic">
-                            <option style="color:rgb(125, 125, 125);background-color:rgb(35, 44, 65);" selected disabled>Select an Available Mechanic</option>
+                            <option style="color:rgb(125, 125, 125);background-color:rgb(40, 50, 75);" selected disabled>Select an Available Mechanic</option>
                             @foreach ($mechanics as $mechanic)
-                            <option value="{{ $mechanic->id }}" style="color:rgb(195, 195, 195); background-color:rgb(35, 44, 65);">
+                            <option value="{{ $mechanic->id }}" style="color:rgb(195, 195, 195); background-color:rgb(40, 50, 75);">
                                 {{ $mechanic->mechanicApplication ? $mechanic->mechanicApplication->name : 'No application available' }}
                             </option>
                             @endforeach
@@ -39,7 +39,7 @@
 
             <div class="d-flex justify-content-end mt-2" style="gap: .5rem;">
                 <button id="closeMaintenanceCarMechanicButton" type="button" class="btn btn-secondary">Close</button>
-                <button type="submit" class="btn btn-primary" id="sbmtBtn">Submit</button>
+                <button type="submit" class="btn btn-{{ $cardColor }}" id="sbmtBtn">Submit</button>
             </div>
         </form>
 
