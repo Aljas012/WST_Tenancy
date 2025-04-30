@@ -15,11 +15,6 @@ class Mechanic extends Model
         return $this->belongsTo(MechanicApplication::class, 'mechanic_applicant_id', 'id');
     }
 
-    // public function cars()
-    // {
-    //     return $this->hasMany(Car::class);
-    // }
-
     public function maintenances()
     {
         return $this->hasMany(Maintenance::class);

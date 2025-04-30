@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Mechanic;
+use App\Models\Car;
+use App\Models\Maintenance;
+
 class TenantAdminDashboard extends Controller
 {
     /**
@@ -11,7 +15,35 @@ class TenantAdminDashboard extends Controller
      */
     public function index()
     {
-        return view('tenantApp.adminDashboard');
+        $totalMechanics = Mechanic::count();
+        $totalCars = Car::count();
+        $totalMaintenance = Maintenance::count();
+
+        $mechanics = Mechanic::with(['maintenances', 'incentives', 'mechanicApplication'])->get();
+
+        $mechanicSummaries = $mechanics->map(function ($mechanic) {
+            $totalSalary = $mechanic->maintenances->sum(function ($maintenance) {
+                return (float) str_replace(',', '', $maintenance->salary);
+            });
+
+            $totalIncentive = $mechanic->incentives->sum(function ($incentive) {
+                return (float) $incentive->incentive;
+            });
+
+            return [
+                'id' => $mechanic->id,
+                'name' => optional($mechanic->mechanicApplication)->name ?? 'N/A',
+                'total_salary' => $totalSalary,
+                'total_incentive' => $totalIncentive,
+            ];
+        });
+
+        return view('tenantApp.adminDashboard', compact(
+            'totalMechanics',
+            'totalCars',
+            'totalMaintenance',
+            'mechanicSummaries'
+        ));
     }
 
     /**

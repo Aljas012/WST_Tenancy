@@ -40,12 +40,22 @@
             </div>
 
             <div class="row" style="padding: 0 1rem;">
+                <div class="col-2">
+                    <div class="form-group" style="margin-bottom: 1rem">
+                        <label for="brand">Salary</label>
+                        <input type="text" class="form-control" name="salary" id="salary">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="padding: 0 1rem;">
                 <div class="col">
                     <div class="form-group">
                         <label for="note">Note</label>
                         <textarea type="text" class="form-control" name="note" rows="3" id="note"></textarea>
                     </div>
                 </div>
+
             </div>
 
             <div class="d-flex justify-content-end mt-2" style="gap: .5rem;">
@@ -91,6 +101,16 @@
                 }
             });
         }
+    </script>
+
+    <script>
+        const salaryInput = document.getElementById('salary');
+
+        salaryInput.addEventListener('input', function() {
+            let value = this.value.replace(/[^0-9]/g, '');
+            value = value.slice(0, 6); 
+            this.value = Number(value).toLocaleString();
+        });
     </script>
 
     <script>

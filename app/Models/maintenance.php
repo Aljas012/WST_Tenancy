@@ -14,6 +14,7 @@ class Maintenance extends Model
         'car_id',
         'mechanic_id',
         'note',
+        'salary',
         'fix_start',
         'fix_end',
     ];

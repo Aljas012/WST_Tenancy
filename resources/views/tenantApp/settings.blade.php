@@ -232,7 +232,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
                                         </div>
 
                                         <div style="display: flex; justify-content: end;">
-                                            <button type="submit" class="btn btn-{{ $cardColor }}" id="UpgrdBtn">Upgrade</button>
+                                            <button type="submit" class="btn btn-{{ $cardColor }}" id="UpgrdBtn">Request</button>
                                         </div>
 
                                     </form>
@@ -312,12 +312,10 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
         document.getElementById('pIncentives').addEventListener('input', function() {
             let value = this.value;
 
-            // Remove non-numeric characters
             value = value.replace(/[^0-9]/g, '');
 
-            // If the value is within the valid range of 1 to 100
             if (value !== '' && (parseInt(value) < 1 || parseInt(value) > 100)) {
-                // If the value exceeds 100 or is less than 1, restrict it
+
                 if (parseInt(value) < 1) {
                     value = '1';
                 } else if (parseInt(value) > 100) {

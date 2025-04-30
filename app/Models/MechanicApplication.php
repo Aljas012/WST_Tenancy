@@ -20,6 +20,6 @@ class MechanicApplication extends Model
 
     public function mechanic()
     {
-        return $this->hasOne(Mechanic::class);
+        return $this->hasOne(Mechanic::class, 'mechanic_applicant_id', 'id');
     }
 }

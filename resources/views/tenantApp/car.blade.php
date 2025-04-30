@@ -77,7 +77,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
                         </script>
                         @endif
 
-                        <div class="customTableWrapper">
+                        <div class="customTableWrapper scrollbar-{{ $cardColor }}">
                             <table class="table table-hover">
                                 <colgroup>
                                     <col width="5%">

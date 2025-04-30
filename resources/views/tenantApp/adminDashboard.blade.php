@@ -1,423 +1,159 @@
-
 @extends('layouts.tenantPageLayout')
 @section('content')
 @section('title', 'Dashboard')
 
+@php
+$colorMapping = [
+'purple' => 'primary',
+'green' => 'success',
+'orange' => 'warning',
+'danger' => 'danger',
+'azure' => 'info',
+];
+$cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
+@endphp
+
 <div class="content">
   <div class="container-fluid">
+
+
     <div class="row">
-      <div class="col-xl-4 col-lg-12">
-        <div class="card card-chart">
-          <div class="card-header card-header-success">
-            <div class="ct-chart" id="dailySalesChart"></div>
-          </div>
-          <div class="card-body">
-            <h4 class="card-title">Daily Sales</h4>
-            <p class="card-category">
-              <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.
-            </p>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">access_time</i> updated 4 minutes ago
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-lg-12">
-        <div class="card card-chart">
-          <div class="card-header card-header-warning">
-            <div class="ct-chart" id="websiteViewsChart"></div>
-          </div>
-          <div class="card-body">
-            <h4 class="card-title">Email Subscriptions</h4>
-            <p class="card-category">Last Campaign Performance</p>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">access_time</i> campaign sent 2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-lg-12">
-        <div class="card card-chart">
-          <div class="card-header card-header-danger">
-            <div class="ct-chart" id="completedTasksChart"></div>
-          </div>
-          <div class="card-body">
-            <h4 class="card-title">Completed Tasks</h4>
-            <p class="card-category">Last Campaign Performance</p>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">access_time</i> campaign sent 2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-warning card-header-icon">
-            <div class="card-icon">
-              <i class="material-icons">content_copy</i>
-            </div>
-            <p class="card-category">Used Space</p>
-            <h3 class="card-title">49/50
-              <small>GB</small>
-            </h3>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons text-warning">warning</i>
-              <a href="#pablo" class="warning-link">Get More Space...</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-success card-header-icon">
-            <div class="card-icon">
-              <i class="material-icons">store</i>
-            </div>
-            <p class="card-category">Revenue</p>
-            <h3 class="card-title">$34,245</h3>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">date_range</i> Last 24 Hours
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-danger card-header-icon">
-            <div class="card-icon">
-              <i class="material-icons">info_outline</i>
-            </div>
-            <p class="card-category">Fixed Issues</p>
-            <h3 class="card-title">75</h3>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">local_offer</i> Tracked from Github
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-info card-header-icon">
-            <div class="card-icon">
-              <i class="fa fa-twitter"></i>
-            </div>
-            <p class="card-category">Followers</p>
-            <h3 class="card-title">+245</h3>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">update</i> Just Updated
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-6 col-md-12">
+      <div class="col-md-8" id="left-column">
+        <!-- Table (Mechanics Record Table) -->
         <div class="card">
-          <div class="card-header card-header-primary">
-            <h4 class="card-title">Employees Stats</h4>
-            <p class="card-category">New employees on 15th September, 2016</p>
+          <div class="card-header card-header-{{ $cardColor }}">
+            <h4 class="card-title">Mechanics Record Table</h4>
+            <p class="card-category">List of All Mechanics Salary and Incentives</p>
           </div>
-          <div class="card-body table-responsive">
-            <table class="table table-hover">
-              <thead class="text-warning">
-                <th>ID</th>
-                <th>Name</th>
-                <th>Salary</th>
-                <th>Country</th>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Dakota Rice</td>
-                  <td>$36,738</td>
-                  <td>Niger</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Minerva Hooper</td>
-                  <td>$23,789</td>
-                  <td>Curaçao</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Sage Rodriguez</td>
-                  <td>$56,142</td>
-                  <td>Netherlands</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Philip Chaney</td>
-                  <td>$38,735</td>
-                  <td>Korea, South</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="card-body">
+            <div class="customTableWrapperAdmin scrollbar-{{ $cardColor }}">
+              <table class="table table-hover">
+                <colgroup>
+                  <col width="10%">
+                  <col width="40%">
+                  <col width="25%">
+                  <col width="25%">
+                </colgroup>
+                <thead class="text-warning">
+                  <th>ID</th>
+                  <th>Full Name</th>
+                  <th>Salary</th>
+                  <th>Incentives</th>
+                </thead>
+                <tbody>
+                  @foreach($mechanicSummaries as $summary)
+                  <tr>
+                    <td>{{ $summary['id'] }}</td>
+                    <td>{{ $summary['name'] }}</td>
+                    <td>₱ {{ number_format($summary['total_salary'], 2) }}</td>
+                    <td>₱ {{ number_format($summary['total_incentive'], 2) }}</td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-12">
-        <div class="card">
-          <div class="card-header card-header-tabs card-header-warning">
-            <div class="nav-tabs-navigation">
-              <div class="nav-tabs-wrapper">
-                <span class="nav-tabs-title">Tasks:</span>
-                <ul class="nav nav-tabs" data-tabs="tabs">
-                  <li class="nav-item">
-                    <a class="nav-link active" href="#profile" data-toggle="tab">
-                      <i class="material-icons">bug_report</i> Bugs
-                      <div class="ripple-container"></div>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#messages" data-toggle="tab">
-                      <i class="material-icons">code</i> Website
-                      <div class="ripple-container"></div>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#settings" data-toggle="tab">
-                      <i class="material-icons">cloud</i> Server
-                      <div class="ripple-container"></div>
-                    </a>
-                  </li>
-                </ul>
+
+      <div class="col-md-4" id="right-column">
+        <!-- Cards for Total Mechanics, Total Vehicle, Total Maintenance -->
+        <div class="row">
+          <div class="card card-stats">
+            <div class="card-header card-header-{{ $cardColor }} card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">people_alt</i>
+              </div>
+              <p class="card-category">Total Mechanics</p>
+              <h3 class="card-title">{{ $totalMechanics }}</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons" style="margin-right: .6rem;">date_range</i> As of <span id="mchncDate" style="margin-left: 3.5px;"></span>
               </div>
             </div>
           </div>
-          <div class="card-body">
-            <div class="tab-content">
-              <div class="tab-pane active" id="profile">
-                <table class="table">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Sign contract for "What are conference organizers afraid of?"</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                      </td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Create 4 Invisible User Experiences you Never Knew About</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+        </div>
+
+        <div class="row">
+          <div class="card card-stats">
+            <div class="card-header card-header-{{ $cardColor }} card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">commute</i>
               </div>
-              <div class="tab-pane" id="messages">
-                <table class="table">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                      </td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Sign contract for "What are conference organizers afraid of?"</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <p class="card-category">Total Vehicle</p>
+              <h3 class="card-title">{{ $totalCars }}</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons" style="margin-right: .6rem;">date_range</i> As of <span id="vhclDate" style="margin-left: 3.5px;"></span>
               </div>
-              <div class="tab-pane" id="settings">
-                <table class="table">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                      </td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Sign contract for "What are conference organizers afraid of?"</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-white btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="card card-stats">
+            <div class="card-header card-header-{{ $cardColor }} card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">handyman</i>
+              </div>
+              <p class="card-category">Total Maintenance</p>
+              <h3 class="card-title">{{ $totalMaintenance }}</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons" style="margin-right: .6rem;">date_range</i> As of <span id="mtncnDate" style="margin-left: 3.5px;"></span>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+
   </div>
 </div>
+
+<script>
+  function formatDate(hoursAgo) {
+
+    const now = new Date();
+    // console.log(now);
+
+    const options = {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    };
+    return now.toLocaleString('en-US', options);
+  }
+
+  function updateLast24Hours() {
+    const last24Hours = formatDate(24);
+    document.getElementById('mchncDate').innerText = `${last24Hours}`;
+    document.getElementById('vhclDate').innerText = `${last24Hours}`;
+    document.getElementById('mtncnDate').innerText = `${last24Hours}`;
+  }
+
+  updateLast24Hours();
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+
+    new Sortable(document.getElementById('left-column'), {
+      group: 'shared',
+      animation: 150,
+      ghostClass: 'sortable-ghost',
+    });
+
+    new Sortable(document.getElementById('right-column'), {
+      group: 'shared',
+      animation: 150,
+      ghostClass: 'sortable-ghost',
+    });
+  });
+</script>
 
 @endsection

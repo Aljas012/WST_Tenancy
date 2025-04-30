@@ -77,7 +77,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
                         </script>
                         @endif
 
-                        <div class="customTableWrapper">
+                        <div class="customTableWrapper scrollbar-{{ $cardColor }}">
                             <table class="table table-hover">
                                 <colgroup>
                                     <col width="5%">
@@ -101,7 +101,8 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
                                         data-mechanic="{{ $maintenance->mechanic->mechanicApplication->name }}"
                                         data-fixStart="{{ $maintenance->fix_start }}"
                                         data-concern="{{ $maintenance->car->concern }}"
-                                        data-note="{{ $maintenance->note }}">
+                                        data-note="{{ $maintenance->note }}"
+                                        data-salary="{{ $maintenance->salary }}">
                                         <td>{{ $maintenance->id }}</td>
                                         <td>{{ $maintenance->car->plate_number }}</td>
                                         <td>{{ $maintenance->mechanic->mechanicApplication->name }}</td>
@@ -162,6 +163,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
                 const fixStart = this.getAttribute('data-fixStart');
                 const concern = this.getAttribute('data-concern');
                 const note = this.getAttribute('data-note');
+                const salary = this.getAttribute('data-salary');
 
 
                 if (table) {
@@ -176,6 +178,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
                     maintenanceUpdateDelete.querySelector('#fixStart').value = fixStart;
                     maintenanceUpdateDelete.querySelector('#concern').value = concern;
                     maintenanceUpdateDelete.querySelector('#note').value = note;
+                    maintenanceUpdateDelete.querySelector('#salary').value = salary;
                     updateForm.action = `/maintenance/${id}`;
 
                     maintenanceUpdateDelete.style.display = 'block';

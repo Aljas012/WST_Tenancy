@@ -20,6 +20,7 @@ return new class extends Migration
                 ->constrained('mechanics')
                 ->onDelete('cascade');
             $table->string('note')->nullable();
+            $table->string('salary')->nullable();
             $table->string('fix_start')->nullable();
             $table->string('fix_end')->nullable();
             $table->timestamps();

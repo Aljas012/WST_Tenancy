@@ -23,6 +23,7 @@ class UpdateMaintenanceRequest extends FormRequest
     {
         return [
             'note' => 'nullable|string|max:100',
+            'salary' => 'nullable|string|max:8',
         ];
     }
 }
