@@ -6,6 +6,8 @@ use App\Models\Maintenance;
 use App\Models\Car;
 use App\Models\Mechanic;
 
+use App\Models\Tenant;
+
 use App\Http\Requests\StoreMaintenanceRequest;
 use App\Http\Requests\UpdateMaintenanceRequest;
 
@@ -24,7 +26,7 @@ class MaintenanceController extends Controller
         $cars = Car::whereDoesntHave('maintenances', function ($query) {
             $query->whereIn('status', ['Under Maintenance', 'Done']);
         })->get();
-        
+
         $mechanics = Mechanic::with('mechanicApplication')->get();
 
         return view('tenantApp.maintenance', compact('maintenances', 'cars', 'mechanics'));
@@ -35,6 +37,22 @@ class MaintenanceController extends Controller
      */
     public function store(StoreMaintenanceRequest $request)
     {
+        $currentTenantId = tenancy()->tenant->id ?? null;
+
+        if ($currentTenantId) {
+            $centralTenant = Tenant::find($currentTenantId);
+
+            if ($centralTenant) {
+                $subscription = $centralTenant->subscription ?? 'No Subscription';
+
+                if (strtolower($subscription) === 'free') {
+                    if (Maintenance::count() >= 3) {
+                        return back()->with('error', 'You already hit your free subscription :)');
+                    }
+                }
+            }
+        }
+
         $validated = $request->validated();
         //dd($validated);
         $fixStartDate = new \DateTime();
@@ -62,7 +80,7 @@ class MaintenanceController extends Controller
 
         $slctdMaintenance = Maintenance::findOrFail($maintenance);
         //dd($slctdMaintenance);
-        
+
         $slctdMaintenance->update($validated);
         $slctdMaintenance->save();
 

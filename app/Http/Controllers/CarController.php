@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Models\Tenant;
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
 
@@ -31,6 +32,22 @@ class CarController extends Controller
      */
     public function store(StoreCarRequest $request)
     {
+        $currentTenantId = tenancy()->tenant->id ?? null;
+
+        if ($currentTenantId) {
+            $centralTenant = Tenant::find($currentTenantId);
+
+            if ($centralTenant) {
+                $subscription = $centralTenant->subscription ?? 'No Subscription';
+
+                if (strtolower($subscription) === 'free') {
+                    if (Car::count() >= 3) {
+                        return back()->with('error', 'You already hit your free subscription :)');
+                    }
+                }
+            }
+        }
+
         $validated = $request->validated();
         Car::create($validated);
 

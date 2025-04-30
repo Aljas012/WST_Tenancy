@@ -48,6 +48,21 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
                         </script>
                         @endif
 
+                        @if (session('error'))
+                        <script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops!',
+                                text: "{{ session('error') }}",
+                                showConfirmButton: true,
+                                timer: 5000,
+                                background: '#242830',
+                                color: '#fff',
+
+                            });
+                        </script>
+                        @endif
+
                         @if ($errors->any())
                         <script>
                             Swal.fire({

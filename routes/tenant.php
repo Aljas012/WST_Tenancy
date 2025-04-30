@@ -76,6 +76,7 @@ Route::middleware([
         Route::post('/settings/layout', [SettingsController::class, 'updateLayout']);
         Route::post('/settings/incentive', [SettingsController::class, 'updateIncentive'])->name('settings.updateIncentive');
         Route::post('/settings/upgrade', [SettingsController::class, 'requestUpgrade'])->name('settings.upgrade');
+        Route::post('/settings/bug', [SettingsController::class, 'reportBug'])->name('settings.bug');
         Route::post('/settings/menuItem', [SettingsController::class, 'saveMenuOrder']);
 
 

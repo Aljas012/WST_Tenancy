@@ -246,6 +246,65 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
             </div>
         </div>
 
+        <div style="display: flex; align-items: center; margin-top: 1.5rem;">
+            <hr class="text-{{ $cardColor }}" style="flex: 0.1; border: none; border-top: 1px solid; margin: 0;">
+            <p class="text-{{ $cardColor}}" style="margin: 0 1rem; font-weight: bold;">Customer Support</p>
+            <hr class="text-{{ $cardColor }}" style="flex: 1.5; border: none; border-top: 1px solid; margin: 0;">
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="card">
+
+                    <div class="row">
+
+                        <div class="col-12 col-md-6">
+                            <div style="padding: 1rem;">
+                                <h5 style="color: #eaeaff;">Report a Bug</h5>
+
+                                <div style="margin-top: 1.5rem">
+                                    <form action="{{ route('settings.bug') }}" method="POST">
+
+                                        @csrf
+                                        <div class="form-group">
+                                            <label for="rprtBg">Provide a detailed information</label>
+                                            <textarea class="form-control" name="rprtBg" id="rprtBg" rows="4"></textarea>
+                                        </div>
+
+                                        <div style="display: flex; justify-content: end;">
+                                            <button type="submit" class="btn btn-{{ $cardColor }}" id="rprtBgBtn">Report</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div style="padding: 1rem;">
+                                <h5 style="color: #eaeaff;">Developer's Contacts</h5>
+
+                                <div style="margin-top: 1rem; padding-top: 1.5rem; display: flex; justify-content: center; gap: 6rem; flex-wrap: wrap; text-align: center;">
+                                    <div>
+                                        <h5 style="color: #eaeaff; font-size: 14px;">Email</h5>
+                                        <p style="color: #eaeaff;">apsone069@gmail.com</p>
+                                    </div>
+
+                                    <div>
+                                        <h5 style="color: #eaeaff; font-size: 14px;">Phone Number</h5>
+                                        <p style="color: #eaeaff;">+63 936 512 9269</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
 
     </div>
 
@@ -270,7 +329,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
             this.value = value;
         });
     </script>
-    
+
 </div>
 
 @endsection

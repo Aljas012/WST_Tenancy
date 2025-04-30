@@ -4,6 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Mechanic;
 use App\Models\MechanicApplication;
+use App\Models\Tenant;
+use App\Models\User;
+
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+use App\Notifications\ApprovedMechanics;
+
 use App\Http\Requests\StoreMechanicRequest;
 use App\Http\Requests\UpdateMechanicRequest;
 
@@ -18,6 +27,22 @@ class MechanicController extends Controller
 
     public function store(StoreMechanicRequest $request)
     {
+        $currentTenantId = tenancy()->tenant->id ?? null;
+
+        if ($currentTenantId) {
+            $centralTenant = Tenant::find($currentTenantId);
+
+            if ($centralTenant) {
+                $subscription = $centralTenant->subscription ?? 'No Subscription';
+
+                if (strtolower($subscription) === 'free') {
+                    if (Mechanic::count() >= 3) {
+                        return back()->with('error', 'You already hit your free subscription :)');
+                    }
+                }
+            }
+        }
+
         $mechanicApplicationId = $request->input('mechanic_aapplication_id');
 
         $mechanicApplication = MechanicApplication::find($mechanicApplicationId);
@@ -27,6 +52,21 @@ class MechanicController extends Controller
         $mechanic = new Mechanic();
         $mechanic->mechanic_applicant_id = $mechanicApplication->id;
         $mechanic->save();
+
+        $mechanicEmail = $mechanicApplication->email;
+        $name = $mechanicApplication->name;
+        $password = Str::random(8);
+
+        $user = User::create([
+            'name' => $name,
+            'email' => $mechanicEmail,
+            'role' => 'user',
+            'password' => Hash::make($password),
+        ]);
+
+        Notification::route('mail', $mechanicEmail)
+            ->notify(new ApprovedMechanics($user, $password));
+
 
         return back()->with('success', 'Mechanic Approved Successfully!');
     }
@@ -47,7 +87,14 @@ class MechanicController extends Controller
     public function destroy($id)
     {
         $mechanic = MechanicApplication::findOrFail($id);
+        $email = $mechanic->email;
+
         $mechanic->delete();
+
+        $user = User::where('email', $email)->first();
+        if ($user) {
+            $user->delete();
+        }
 
         return response()->json(['dSuccess' => 'Mechanic Removed Successfully!']);
     }

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Settings;
 use App\Models\Tenant;
+
 use App\Notifications\SubscriptionUpgradeRequest;
+use App\Notifications\ReportBugEmail;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Notification;
@@ -170,5 +173,29 @@ class SettingsController extends Controller
         }
 
         return back()->with('error', 'Tenant not found.');
+    }
+
+    public function reportBug(Request $request)
+    {
+
+        $request->validate([
+            'rprtBg' => 'required|string|max:5000',
+        ]);
+
+        $tenantId = tenancy()->tenant->id ?? null;
+        $bugReport = $request->input('rprtBg');
+
+        if ($tenantId) {
+
+            $centralTenant = Tenant::find($tenantId);
+
+            if ($centralTenant) {
+
+                Notification::route('mail', 'apsone069@gmail.com')
+                    ->notify(new ReportBugEmail($centralTenant, $bugReport));
+
+                return back()->with('success', 'Report sent successfully!');
+            }
+        }
     }
 }
