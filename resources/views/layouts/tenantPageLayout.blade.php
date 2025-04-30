@@ -34,6 +34,7 @@
     <link href="../assets/demo/demo.css" rel="stylesheet" />
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Lora&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
     <style>
@@ -63,48 +64,14 @@
                 </a>
             </div>
             <div class="sidebar-wrapper">
-                <ul class="nav">
-                    <li class="nav-item {{ request()->routeIs('tenant_admin_dashboard') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('tenant_admin_dashboard') }}">
-                            <i class="material-icons">dashboard</i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
+                @php
+                $menuOrder = $settings->menu_order ?? ['dashboard', 'mechanic', 'vehicle', 'maintenance', 'inventory', 'settings'];
+                @endphp
 
-                    <li class="nav-item {{ request()->routeIs('mechanic.*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('mechanic.index') }}">
-                            <i class="material-icons">people_alt</i>
-                            <p>Mechanic</p>
-                        </a>
-                    </li>
-
-                    <li class="nav-item {{ request()->routeIs('car.*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('car.index') }}">
-                            <i class="material-icons">commute</i>
-                            <p>Vehicle</p>
-                        </a>
-                    </li>
-
-                    <li class="nav-item {{ request()->routeIs('maintenance.*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('maintenance.index') }}">
-                            <i class="material-icons">handyman</i>
-                            <p>Maintenance</p>
-                        </a>
-                    </li>
-
-                    <li class="nav-item {{ request()->routeIs('inventory.*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('inventory.index') }}">
-                            <i class="material-icons">inventory_2</i>
-                            <p>Inventory</p>
-                        </a>
-                    </li>
-
-                    <li class="nav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('settings.index') }}">
-                            <i class="material-icons">settings</i>
-                            <p>Settings</p>
-                        </a>
-                    </li>
+                <ul class="nav" id="sidebar-menu">
+                    @foreach ($menuOrder as $item)
+                    @include('partials.' . $item)
+                    @endforeach
                 </ul>
             </div>
         </div>
@@ -496,9 +463,32 @@
         });
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            new Sortable(document.getElementById('sidebar-menu'), {
+                animation: 100,
+                ghostClass: 'sortable-ghost',
+                onEnd: function(evt) {
+                    const order = [...document.querySelectorAll('#sidebar-menu .nav-item')].map(item => item.dataset.id);
 
-
-
+                    $.ajax({
+                        url: '/settings/menuItem',
+                        type: 'POST',
+                        data: {
+                            order: order,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            console.log('Order saved:', response);
+                        },
+                        error: function(xhr) {
+                            console.error('Error saving order:', xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 
 
     <script>

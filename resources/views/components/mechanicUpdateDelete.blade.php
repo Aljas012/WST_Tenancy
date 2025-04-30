@@ -17,7 +17,7 @@
                     </div>
                     <div class="form-group">
                         <label for="eaddress">Email Address</label>
-                        <input type="email" class="form-control" id="eaddress" name="email"  readonly style="background-color: transparent;">
+                        <input type="email" class="form-control" id="eaddress" name="email" readonly style="background-color: transparent;">
                     </div>
                 </div>
 
@@ -35,7 +35,7 @@
 
             <div class="d-flex justify-content-end mt-2" style="gap: .5rem;">
                 <button id="closeMechanicUpdateDeleteButton" type="button" class="btn btn-secondary">Close</button>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-{{ $cardColor }}">Update</button>
             </div>
         </form>
 

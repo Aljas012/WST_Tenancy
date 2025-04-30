@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('font')->nullable();
             $table->boolean('layout')->default(false);
             $table->decimal('incentive_percentage', 5, 2)->nullable();
+            $table->json('menu_order')->nullable();
             $table->timestamps();
         });
     }

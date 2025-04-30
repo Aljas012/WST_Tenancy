@@ -7,6 +7,8 @@ use App\Models\TenantInfo;
 use App\Models\TenantApplication;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Log;
+
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\PausedTenant;
 use App\Notifications\ResumeTenant;
@@ -29,8 +31,8 @@ class TenantInfoController extends Controller
         $tenantApplication = $tenantDStatus->tenantApplication;
         $tenantEmail = $tenantApplication->email;
 
-        Notification::route('mail', $tenantEmail) 
-        ->notify(new PausedTenant($tenantApplication));
+        Notification::route('mail', $tenantEmail)
+            ->notify(new PausedTenant($tenantApplication));
 
         return response()->json(['pSuccess' => 'Domain Paused Successfully!']);
     }
@@ -46,8 +48,8 @@ class TenantInfoController extends Controller
         $tenantApplication = $tenantDStatus->tenantApplication;
         $tenantEmail = $tenantApplication->email;
 
-        Notification::route('mail', $tenantEmail) 
-        ->notify(new ResumeTenant($tenantApplication));
+        Notification::route('mail', $tenantEmail)
+            ->notify(new ResumeTenant($tenantApplication));
 
         return response()->json(['rSuccess' => 'Domain Resumed Successfully!']);
     }
@@ -57,38 +59,35 @@ class TenantInfoController extends Controller
         $requested = $request->validated();
 
         $tenancy = TenantApplication::findOrFail($tenant);
-
         $tenancy->subscription = $requested['subscription'];
         $tenancy->save();
 
-        // Access related tenantInfo
-        $tenantInfo = $tenancy->tenantInfo;
+        $start = new \DateTime();
+        $end = null;
 
-        if ($tenantInfo) {
-            $start = new \DateTime();
+        if ($requested['subscription'] === 'Month') {
+            $end = (clone $start)->add(new \DateInterval('P1M'));
+        } elseif ($requested['subscription'] === 'Year') {
+            $end = (clone $start)->add(new \DateInterval('P1Y'));
+        }
 
-            if ($requested['subscription'] === 'Month') {
-                $end = (clone $start)->add(new \DateInterval('P1M'));
-
-                $tenantInfo->subscription_start_date = $start->format('F j, Y');
-                $tenantInfo->subscription_end_date = $end->format('F j, Y');
-            } elseif ($requested['subscription'] === 'Year') {
-                $end = (clone $start)->add(new \DateInterval('P1Y'));
-
-                $tenantInfo->subscription_start_date = $start->format('F j, Y');
-                $tenantInfo->subscription_end_date = $end->format('F j, Y');
-            } else { // Free
-                $tenantInfo->subscription_start_date = $start->format('F j, Y');
-                $tenantInfo->subscription_end_date = null;
-            }
-
+        // Update tenantInfo if exists
+        if ($tenantInfo = $tenancy->tenantInfo) {
+            $tenantInfo->subscription_start_date = $start->format('F j, Y');
+            $tenantInfo->subscription_end_date = $end ? $end->format('F j, Y') : null;
             $tenantInfo->save();
         }
 
-        $tenantEmail = $tenancy->email;
+        // Update the central Tenant model
+        if ($tenantModel = Tenant::findOrFail($tenant)) {
+            $tenantModel->subscription = $requested['subscription'];
+            $tenantModel->subscription_start_date = $start->format('F j, Y');
+            $tenantModel->subscription_end_date = $end ? $end->format('F j, Y') : null;
+            $tenantModel->save();
+        }
 
-        Notification::route('mail', $tenantEmail) 
-        ->notify(new UpdateSubsTenant($tenancy));
+        Notification::route('mail', $tenancy->email)
+            ->notify(new UpdateSubsTenant($tenancy));
 
         return response()->json(['sSuccess' => 'Subscription successfully updated.']);
     }
@@ -103,9 +102,9 @@ class TenantInfoController extends Controller
 
         $tenantEmail = $tenancy->email;
 
-        Notification::route('mail', $tenantEmail) 
-        ->notify(new DeleteTenant($tenancy));
-    
+        Notification::route('mail', $tenantEmail)
+            ->notify(new DeleteTenant($tenancy));
+
         return response()->json(['dSuccess' => 'Tenant deleted successfully.']);
     }
 }

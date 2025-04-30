@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Middleware\PauseDomain;
+use App\Http\Middleware\UseTenantMailConfig;
+
 /*
 |--------------------------------------------------------------------------
 | Tenant Routes
@@ -38,6 +40,7 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
     PauseDomain::class,
+    UseTenantMailConfig::class,
 ])->group(function () {
     Route::get('/', [TenantAppPageController::class, 'index']);
 
@@ -72,6 +75,9 @@ Route::middleware([
         Route::post('/settings/font', [SettingsController::class, 'updateFont']);
         Route::post('/settings/layout', [SettingsController::class, 'updateLayout']);
         Route::post('/settings/incentive', [SettingsController::class, 'updateIncentive'])->name('settings.updateIncentive');
+        Route::post('/settings/upgrade', [SettingsController::class, 'requestUpgrade'])->name('settings.upgrade');
+        Route::post('/settings/menuItem', [SettingsController::class, 'saveMenuOrder']);
+
 
 
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])

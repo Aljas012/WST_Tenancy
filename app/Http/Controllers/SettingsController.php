@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Settings;
+use App\Models\Tenant;
+use App\Notifications\SubscriptionUpgradeRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Notification;
+
 use App\Http\Requests\StoreSettingsRequest;
 use App\Http\Requests\UpdateSettingsRequest;
 
@@ -15,13 +19,28 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        $settings = null;
+        $settings = Schema::hasTable('settings') ? Settings::first() : null;
+        $subscription = null;
 
-        if (Schema::hasTable('settings')) {
-            $settings = Settings::first();
+        $currentTenantId = tenancy()->tenant->id ?? null;
+
+        // dd($currentTenantId);
+        if ($currentTenantId) {
+            $centralTenant = Tenant::find($currentTenantId);
+            // dd($centralTenant);
+
+            if ($centralTenant) {
+                $rawSubscription  = $centralTenant->subscription ?? 'No Subscription';
+
+                if (in_array(strtolower($rawSubscription), ['month', 'year', 'monthly', 'yearly'])) {
+                    $subscription = 'Premium';
+                } elseif ($rawSubscription) {
+                    $subscription = $rawSubscription;
+                }
+            }
         }
-        
-        return view('tenantApp.settings', compact('settings'));
+
+        return view('tenantApp.settings', compact('settings', 'subscription'));
     }
 
     public function updateColor(Request $request)
@@ -80,6 +99,33 @@ class SettingsController extends Controller
         return response()->json(['message' => 'Layout updated successfully!']);
     }
 
+    public function saveMenuOrder(Request $request)
+    {
+        $request->validate([
+            'order' => 'required|array',
+        ]);
+
+        $settings = Settings::first();
+
+        if (! $settings) {
+            $settings = Settings::create([
+                'color' => 'purple',
+                'font' => 'poppins',
+                'incentive_percentage' => null,
+                'layout' => false,
+                'menu_order' => $request->order,
+            ]);
+
+            return response()->json(['message' => 'Menu order created.']);
+        }
+
+        $settings->update([
+            'menu_order' => $request->order,
+        ]);
+
+        return response()->json(['message' => 'Menu order saved.']);
+    }
+
     public function updateIncentive(Request $request)
     {
         // dd($request);
@@ -102,5 +148,27 @@ class SettingsController extends Controller
         }
 
         return back()->with('success', 'Incentive Percentage Updated Successfully!');
+    }
+
+    public function requestUpgrade(Request $request)
+    {
+        $tenantId = tenancy()->tenant->id ?? null;
+        // dd($tenantId);
+
+        if ($tenantId) {
+
+            $centralTenant = Tenant::find($tenantId);
+            // dd($centralTenant);
+
+            if ($centralTenant) {
+
+                Notification::route('mail', 'apsone069@gmail.com')
+                    ->notify(new SubscriptionUpgradeRequest($centralTenant));
+
+                return back()->with('success', 'Upgrade request sent successfully!');
+            }
+        }
+
+        return back()->with('error', 'Tenant not found.');
     }
 }

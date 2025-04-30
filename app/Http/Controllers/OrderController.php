@@ -32,8 +32,7 @@ class OrderController extends Controller
         $maintenance = Maintenance::with('mechanic')->find($maintenanceId);
         $mechanicId = $maintenance->mechanic->id ?? null;
 
-        // 👉 Get the latest incentive percentage
-        $defaultPercentage = Settings::first()->incentive_percentage ?? 0.05;
+        $defaultPercentage = Settings::first()->incentive_percentage ?? 5;
 
         foreach ($orders as $orderData) {
             $inventory = Inventory::where('part_number', $orderData['part_number'])->first();

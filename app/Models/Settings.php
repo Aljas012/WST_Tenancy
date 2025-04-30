@@ -15,5 +15,10 @@ class Settings extends Model
         'font',
         'incentive_percentage',
         'layout',
+        'menu_order',
+    ];
+
+    protected $casts = [
+        'menu_order' => 'array',
     ];
 }

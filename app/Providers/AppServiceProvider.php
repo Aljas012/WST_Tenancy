@@ -30,5 +30,16 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('settings', Settings::first());
             }
         });
+
+        // if (tenancy()->initialized) {
+        //     if (app()->runningInConsole()) return;
+
+        //     config([
+        //         'mail.mailers.smtp.username' => 'tenant0690@gmail.com',
+        //         'mail.mailers.smtp.password' => 'cnwvbkpdvdpjzbhv',
+        //         'mail.from.address' => 'tenant0690@gmail.com',
+        //         'mail.from.name' => 'Tenant App',
+        //     ]);
+        // }
     }
 }

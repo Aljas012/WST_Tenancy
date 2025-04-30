@@ -55,7 +55,7 @@
 
             <div class="d-flex justify-content-end mt-2" style="gap: .5rem;">
                 <button id="clsCartBtn" type="button" class="btn btn-secondary">Close</button>
-                <button type="submit" class="btn btn-primary" id="chckOutBtn">Check Out</button>
+                <button type="submit" class="btn btn-{{ $cardColor }}" id="chckOutBtn">Check Out</button>
             </div>
         </form>
 

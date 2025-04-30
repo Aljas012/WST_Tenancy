@@ -223,17 +223,18 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
                                 <h5 style="color: #eaeaff;">Subscription</h5>
 
                                 <div style="margin-top: 1.5rem">
-                                    <form action="" method="POST">
+                                    <form action="{{ route('settings.upgrade') }}" method="POST">
 
                                         @csrf
                                         <div class="form-group">
-                                            <label for="subsReq" class="bmd-label-floating">Update Subscription</label>
-                                            <input type="text" class="form-control" id="subsReq" name="subscription_request" readonly style="background-color: transparent;">
+                                            <label for="subsReq" class="bmd-label-floating">Current Subscription</label>
+                                            <input type="text" class="form-control" id="subsReq" value="{{ $subscription }}" name="subscription_request" readonly style="background-color: transparent;">
                                         </div>
 
                                         <div style="display: flex; justify-content: end;">
-                                            <button type="submit" class="btn btn-{{ $cardColor }}" id="prcntBtn">Update</button>
+                                            <button type="submit" class="btn btn-{{ $cardColor }}" id="UpgrdBtn">Upgrade</button>
                                         </div>
+
                                     </form>
                                 </div>
                             </div>
@@ -269,6 +270,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
             this.value = value;
         });
     </script>
+    
 </div>
 
 @endsection
