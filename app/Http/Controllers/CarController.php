@@ -16,7 +16,25 @@ class CarController extends Controller
     {
         $cars = Car::orderBy('created_at', 'desc')->get();
 
-        return view('tenantApp.car', compact('cars'));
+        $subscription = null;
+
+        $currentTenantId = tenancy()->tenant->id ?? null;
+
+        if ($currentTenantId) {
+            $centralTenant = Tenant::find($currentTenantId);
+
+            if ($centralTenant) {
+                $rawSubscription  = $centralTenant->subscription ?? 'No Subscription';
+
+                if (in_array(strtolower($rawSubscription), ['month', 'year', 'monthly', 'yearly'])) {
+                    $subscription = 'Premium';
+                } elseif ($rawSubscription) {
+                    $subscription = $rawSubscription;
+                }
+            }
+        }
+
+        return view('tenantApp.car', compact('cars', 'subscription'));
     }
 
     /**

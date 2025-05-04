@@ -89,5 +89,8 @@ Route::middleware([
 
     Route::middleware(['auth:tenant', 'role:user'])->group(function () {
         Route::get('/user', [TenantUserDashboard::class, 'index'])->name('tenant_user_dashboard');
+
+        Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+            ->name('logout');
     });
 });

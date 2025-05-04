@@ -20,15 +20,43 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
 
                 <div class="card">
                     <div class="card-header card-header-{{ $cardColor }} d-flex justify-content-between align-items-center">
+
                         <div>
                             <h4 class="card-title">Vehicle Table</h4>
                             <p class="card-category">List of all cars for maintenance</p>
                         </div>
-                        <button type="button" class="btn btn-{{ $cardColor }}" style="display: flex; align-items: center; gap: 8px;" id="openAddCar">
-                            <i class="material-icons">commute</i>
-                            Add Vehicle
-                        </button>
+
+
+                        <div style="display:flex; justify-content: center; align-items: center; gap: 1.5rem">
+                            @if(strtolower($subscription) === 'free')
+                            <p class="card-category">
+                                {{ count($cars) }} out of 3
+                            </p>
+
+
+                            <button
+                                type="button"
+                                class="btn btn-{{ $cardColor }}"
+                                style="display: flex; align-items: center; gap: 8px;"
+                                id="openAddCar"
+                                {{ count($cars) >= 3 ? 'disabled' : '' }}>
+                                <i class="material-icons">commute</i>
+                                Add Vehicle
+                            </button>
+                            @else
+                            <button
+                                type="button"
+                                class="btn btn-{{ $cardColor }}"
+                                style="display: flex; align-items: center; gap: 8px;"
+                                id="openAddCar">
+                                <i class="material-icons">commute</i>
+                                Add Vehicle
+                            </button>
+                            @endif
+                        </div>
+
                     </div>
+
                     <div class="card-body table-responsive">
                         @include('components.carAdd')
                         @include('components.carUpdateDelete')

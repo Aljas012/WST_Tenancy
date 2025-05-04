@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Mechanic;
 use App\Models\MechanicApplication;
 use App\Models\Tenant;
@@ -22,7 +23,27 @@ class MechanicController extends Controller
     {
         $mechanics = MechanicApplication::orderBy('created_at', 'desc')->get();
 
-        return view('tenantApp.mechanic', compact('mechanics'));
+        $subscription = null;
+
+        $currentTenantId = tenancy()->tenant->id ?? null;
+
+        if ($currentTenantId) {
+            $centralTenant = Tenant::find($currentTenantId);
+
+            if ($centralTenant) {
+                $rawSubscription  = $centralTenant->subscription ?? 'No Subscription';
+
+                if (in_array(strtolower($rawSubscription), ['month', 'year', 'monthly', 'yearly'])) {
+                    $subscription = 'Premium';
+                } elseif ($rawSubscription) {
+                    $subscription = $rawSubscription;
+                }
+            }
+        }
+
+        //dd($subscription);
+
+        return view('tenantApp.mechanic', compact('mechanics', 'subscription'));
     }
 
     public function store(StoreMechanicRequest $request)

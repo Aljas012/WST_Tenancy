@@ -29,7 +29,23 @@ class MaintenanceController extends Controller
 
         $mechanics = Mechanic::with('mechanicApplication')->get();
 
-        return view('tenantApp.maintenance', compact('maintenances', 'cars', 'mechanics'));
+        $currentTenantId = tenancy()->tenant->id ?? null;
+
+        if ($currentTenantId) {
+            $centralTenant = Tenant::find($currentTenantId);
+
+            if ($centralTenant) {
+                $rawSubscription  = $centralTenant->subscription ?? 'No Subscription';
+
+                if (in_array(strtolower($rawSubscription), ['month', 'year', 'monthly', 'yearly'])) {
+                    $subscription = 'Premium';
+                } elseif ($rawSubscription) {
+                    $subscription = $rawSubscription;
+                }
+            }
+        }
+
+        return view('tenantApp.maintenance', compact('maintenances', 'cars', 'mechanics', 'subscription'));
     }
 
     /**

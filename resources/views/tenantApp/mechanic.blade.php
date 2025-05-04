@@ -19,9 +19,19 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
             <div class="col">
 
                 <div class="card">
-                    <div class="card-header card-header-{{ $cardColor }}">
-                        <h4 class="card-title">Mechanic Table</h4>
-                        <p class="card-category">List of all mechanics who have signed up</p>
+                    <div class="card-header card-header-{{ $cardColor }}" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h4 class="card-title">Mechanic Table</h4>
+                            <p class="card-category">List of all mechanics who have signed up</p>
+                        </div>
+
+                        @if(strtolower($subscription) === 'free')
+                        <div style="margin-right: 3rem;"> 
+                            <p class="card-category">
+                                {{ count($mechanics) }} out of 3 
+                            </p>
+                        </div>
+                        @endif
                     </div>
                     <div class="card-body table-responsive">
                         @include('components.mechanicUpdateDelete')

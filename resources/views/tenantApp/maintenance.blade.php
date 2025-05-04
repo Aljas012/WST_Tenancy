@@ -20,14 +20,39 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
 
                 <div class="card">
                     <div class="card-header card-header-{{ $cardColor }} d-flex justify-content-between align-items-center">
+
                         <div>
                             <h4 class="card-title">Maintenance Table</h4>
                             <p class="card-category">List of all cars undergoing maintenance</p>
                         </div>
-                        <button type="button" class="btn btn-{{ $cardColor }}" style="display: flex; align-items: center; gap: 8px;" id="openMaintenanceCarMechanic">
-                            <i class="material-icons">handyman</i>
-                            Add Maintenance
-                        </button>
+
+                        <div style="display:flex; justify-content: center; align-items: center; gap: 1.5rem">
+                            @if(strtolower($subscription) === 'free')
+                            <p class="card-category {{ count($maintenances) >= 3 ? 'text-danger' : '' }}">
+                                {{ count($maintenances) }} out of 3
+                            </p>
+
+                            <button
+                                type="button"
+                                class="btn btn-{{ $cardColor }}"
+                                style="display: flex; align-items: center; gap: 8px;"
+                                id="openMaintenanceCarMechanic"
+                                {{ count($maintenances) >= 3 ? 'disabled' : '' }}>
+                                <i class="material-icons">handyman</i>
+                                Add Maintenance
+                            </button>
+                            @else
+                            <button
+                                type="button"
+                                class="btn btn-{{ $cardColor }}"
+                                style="display: flex; align-items: center; gap: 8px;"
+                                id="openMaintenanceCarMechanic">
+                                <i class="material-icons">handyman</i>
+                                Add Maintenance
+                            </button>
+                            @endif
+                        </div>
+
                     </div>
                     <div class="card-body table-responsive">
                         @include('components.maintenanceAdd')
