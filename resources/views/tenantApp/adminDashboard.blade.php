@@ -19,14 +19,19 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
 
     <div class="row">
       <div class="col-md-8" id="left-column">
-        <!-- Table (Mechanics Record Table) -->
+        <!-- Table -->
         <div class="card">
+
           <div class="card-header card-header-{{ $cardColor }}">
             <h4 class="card-title">Mechanics Record Table</h4>
             <p class="card-category">List of All Mechanics Salary and Incentives</p>
           </div>
+
           <div class="card-body">
-            <div class="customTableWrapperAdmin scrollbar-{{ $cardColor }}">
+
+            @include('components.detailedRecords')
+
+            <div id="mechanicsTableWrapper" class="customTableWrapperAdmin scrollbar-{{ $cardColor }}">
               <table class="table table-hover">
                 <colgroup>
                   <col width="10%">
@@ -42,7 +47,11 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
                 </thead>
                 <tbody>
                   @foreach($mechanicSummaries as $summary)
-                  <tr>
+                  <tr class="records-row" style="cursor: pointer;"
+                    data-id="{{ $summary['id'] }}"
+                    data-name="{{ $summary['name'] }}"
+                    data-salary="{{ $summary['total_salary'] }}"
+                    data-incentive="{{ $summary['total_incentive'] }}">
                     <td>{{ $summary['id'] }}</td>
                     <td>{{ $summary['name'] }}</td>
                     <td>₱ {{ number_format($summary['total_salary'], 2) }}</td>
@@ -114,6 +123,122 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
 
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('.records-row');
+    const detailedDiv = document.getElementById('detailedRecords');
+    const nameInput = document.getElementById('mechanicName');
+    const closeBtn = document.getElementById('closeDetailedRecords');
+    const tableWrapper = document.getElementById('mechanicsTableWrapper');
+
+    const carsTbody = detailedDiv.querySelectorAll('tbody')[0];
+    const productsTbody = detailedDiv.querySelectorAll('tbody')[1];
+
+    rows.forEach(row => {
+      row.addEventListener('click', function() {
+        const mechanicId = this.dataset.id;
+
+        if (tableWrapper) {
+          tableWrapper.style.display = 'none';
+        }
+
+        if (detailedDiv) {
+          detailedDiv.querySelector('#mechanicName').value = name;
+
+          detailedDiv.style.display = 'block';
+          detailedDiv.scrollIntoView({
+            behavior: 'smooth'
+          });
+
+        }
+        console.log(mechanicId);
+
+        fetch(`/details/${mechanicId}`)
+          .then(response => response.json())
+          .then(data => {
+            nameInput.value = data.name;
+
+            // console.log(data.cars)
+
+            document.getElementById('mechanic_id').value = data.id;
+            document.getElementById('mechanicNameInput').value = data.name;
+            document.getElementById('phoneInput').value = data.phone;
+            document.getElementById('addressInput').value = data.address;
+
+            document.getElementById('carsDataInput').value = JSON.stringify(data.cars);
+            document.getElementById('productsDataInput').value = JSON.stringify(data.products);
+
+            carsTbody.innerHTML = '';
+            productsTbody.innerHTML = '';
+
+            // Fill Car table
+            data.cars.forEach(car => {
+              let salary = car.salary;
+              //console.log(salary);
+
+              if (salary === null || salary === undefined || salary === '') {
+                salary = 0;
+              } else if (typeof salary === 'string') {
+                salary = Number(salary.replace(/,/g, ''));
+              }
+              const formattedSalary = salary.toLocaleString('en-PH', {
+                minimumFractionDigits: 2
+              });
+
+              const row = `<tr>
+                                  <td>${car.id}</td>
+                                  <td>${car.car_name}</td>
+                                  <td>₱ ${formattedSalary}</td>
+                            </tr>`;
+              carsTbody.innerHTML += row;
+            });
+
+            // Fill Product table
+            data.products.forEach(product => {
+              let incentive = product.incentive;
+              //console.log(incentive);
+
+              if (typeof incentive === 'string') {
+                incentive = Number(incentive.replace(/,/g, ''));
+              }
+
+              const formattedIncentive = incentive.toLocaleString('en-PH', {
+                minimumFractionDigits: 2
+              });
+
+              const row = `<tr>
+                                <td>${product.id}</td>
+                                <td>${product.category}</td>
+                                <td>₱ ${formattedIncentive}</td>
+                            </tr>`;
+              productsTbody.innerHTML += row;
+            });
+
+            // Show detailed section
+            detailedDiv.style.display = 'block';
+          });
+
+      });
+    });
+
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function() {
+
+        if (detailedDiv) {
+          detailedDiv.style.display = 'none';
+        }
+
+        if (tableWrapper) {
+          tableWrapper.style.display = 'block';
+        }
+      });
+    }
+
+
+  });
+</script>
 
 <script>
   function formatDate(hoursAgo) {

@@ -23,9 +23,7 @@ class MaintenanceController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $cars = Car::whereDoesntHave('maintenances', function ($query) {
-            $query->whereIn('status', ['Under Maintenance', 'Done']);
-        })->get();
+        $cars = Car::whereNotIn('status', ['Under Maintenance', 'Done'])->get();
 
         $mechanics = Mechanic::with('mechanicApplication')->get();
 

@@ -105,7 +105,6 @@
     right: 0 !important; /* Position it to the right side of the screen */
 }
 
-
 .customTableWrapperMechanics {
     max-height: 233px; /* Set fixed height for the table */
     overflow-y: auto; /* Enable vertical scrolling */
@@ -134,7 +133,6 @@
     z-index: 2;
 }
 
-
 .customTableWrapperAdmin {
     height: 426px; /* Set fixed height for the table */
     overflow-y: auto; /* Enable vertical scrolling */
@@ -157,6 +155,37 @@
 
 /* Fix table header at the top */
 .customTableWrapperAdmin thead {
+    position: sticky;
+    top: 0;
+    background-color: rgba(32, 41, 64, 255);
+    z-index: 2;
+}
+
+.customTableWrapperDetails {
+    height: 200px; /* Set fixed height for the table */
+    overflow-y: auto; /* Enable vertical scrolling */
+    position: relative;
+}
+/* Scrollbar for Webkit browsers (Chrome, Edge, Safari) */
+.customTableWrapperDetails::-webkit-scrollbar {
+    margin-top: 2rem;
+    width: 7px; /* Adjust width */
+}
+
+.customTableWrapperDetails::-webkit-scrollbar-track {
+    margin-top: 3.1rem;
+    background: #19232f; /* Darker gray for contrast */
+    border-radius: 4px;
+}
+
+.customTableWrapperDetails::-webkit-scrollbar-thumb {
+
+    background: linear-gradient(60deg, #aa36be, #740088);
+    border-radius: 4px;
+}
+
+/* Fix table header at the top */
+.customTableWrapperDetails thead {
     position: sticky;
     top: 0;
     background-color: rgba(32, 41, 64, 255);

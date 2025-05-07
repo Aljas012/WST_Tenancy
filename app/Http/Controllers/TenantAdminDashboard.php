@@ -46,51 +46,40 @@ class TenantAdminDashboard extends Controller
         ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function getMechanicDetails($id)
     {
-        //
-    }
+        $mechanic = Mechanic::with(['maintenances.car',  'incentives.order.product', 'mechanicApplication'])
+            ->findOrFail($id);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $application = optional($mechanic->mechanicApplication);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $name = $application->name ?? 'N/A';
+        $phone = $application->contact ?? 'N/A';
+        $address = $application->address ?? 'N/A';
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        $cars = $mechanic->maintenances->map(function ($maintenance) {
+            return [
+                'id' => $maintenance->id,
+                'car_name' => optional($maintenance->car)->model ?? 'N/A',
+                'salary' => $maintenance->salary,
+            ];
+        });
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        $products = $mechanic->incentives->map(function ($incentive) {
+            return [
+                'id' => $incentive->id,
+                'category' => optional($incentive->order->product)->category ?? 'N/A',
+                'incentive' => $incentive->incentive,
+            ];
+        });
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json([
+            'id' => $mechanic->id,
+            'name' => $name,
+            'phone' => $phone,
+            'address' => $address,
+            'cars' => $cars,
+            'products' => $products,
+        ]);
     }
 }

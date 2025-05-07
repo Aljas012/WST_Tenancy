@@ -20,6 +20,11 @@ class Inventory extends Model
 
     public function orders()
     {
-        return $this->hasMany(Order::class);  // Inventory has many Orders
+        return $this->hasMany(Order::class); 
+    }
+
+    public function incentive()
+    {
+        return $this->hasMany(Incentives::class); 
     }
 }

@@ -13,6 +13,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\IncentivesController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\PDFController;
 
 use App\Http\Controllers\TenantUserDashboard;
 
@@ -49,6 +50,7 @@ Route::middleware([
 
     Route::middleware(['auth:tenant', 'role:admin'])->group(function () {
         Route::get('/admin', [TenantAdminDashboard::class, 'index'])->name('tenant_admin_dashboard');
+        Route::get('/details/{id}', [TenantAdminDashboard::class, 'getMechanicDetails']);
 
         // ROUTE SA MECHANIC MODULE
         Route::resource('/mechanic', MechanicController::class);
@@ -78,6 +80,9 @@ Route::middleware([
         Route::post('/settings/upgrade', [SettingsController::class, 'requestUpgrade'])->name('settings.upgrade');
         Route::post('/settings/bug', [SettingsController::class, 'reportBug'])->name('settings.bug');
         Route::post('/settings/menuItem', [SettingsController::class, 'saveMenuOrder']);
+
+        //ROUTE SA PDF
+        Route::post('/generate-pdf', [PDFController::class, 'generatePDFReport'])->name('generate.pdf');
 
 
 

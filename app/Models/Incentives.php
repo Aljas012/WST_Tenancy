@@ -26,4 +26,9 @@ class Incentives extends Model
     {
         return $this->belongsTo(Mechanic::class);
     }
+
+    public function inventory()
+    {
+        return $this->belongsTo(Inventory::class);
+    }
 }
