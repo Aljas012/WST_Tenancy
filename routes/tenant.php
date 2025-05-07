@@ -16,13 +16,16 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PDFController;
 
 use App\Http\Controllers\TenantUserDashboard;
+use App\Http\Controllers\GoogleController;
 
 use Illuminate\Support\Facades\Route;
 
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+
 use App\Http\Middleware\PauseDomain;
 use App\Http\Middleware\UseTenantMailConfig;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -87,7 +90,6 @@ Route::middleware([
 
         //ROUTE SA PDF
         Route::post('/generate-pdf', [PDFController::class, 'generatePDFReport'])->name('generate.pdf');
-        
     });
 
 

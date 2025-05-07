@@ -5,6 +5,8 @@ use App\Http\Controllers\TenantApplicationController;
 use App\Http\Controllers\TenantInfoController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
+use App\Http\Controllers\GoogleController;
+
 use Illuminate\Support\Facades\Route;
 
 foreach (config('tenancy.central_domains') as $domain) {
@@ -28,7 +30,8 @@ foreach (config('tenancy.central_domains') as $domain) {
         });
 
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
+            ->name('logout');
+
 
         Route::middleware('auth')->group(function () {
             Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
