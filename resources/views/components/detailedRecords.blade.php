@@ -100,6 +100,10 @@
                 if (result.isConfirmed) {
                     document.getElementById('pdfForm').submit();
 
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500); 
+
                 } else {
 
                     Swal.fire({

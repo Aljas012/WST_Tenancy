@@ -22,6 +22,7 @@ class MechanicController extends Controller
     public function index()
     {
         $mechanics = MechanicApplication::orderBy('created_at', 'desc')->get();
+        $mechanicCount = Mechanic::orderBy('created_at', 'desc')->get();
 
         $subscription = null;
 
@@ -43,7 +44,7 @@ class MechanicController extends Controller
 
         //dd($subscription);
 
-        return view('tenantApp.mechanic', compact('mechanics', 'subscription'));
+        return view('tenantApp.mechanic', compact('mechanics', 'subscription', 'mechanicCount'));
     }
 
     public function store(StoreMechanicRequest $request)

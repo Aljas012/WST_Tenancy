@@ -31,7 +31,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
                         </button>
                     </div>
 
-                    <div class="card-body table-responsive bodyWrapper">
+                    <div class="card-body table-responsive bodyWrapper scrollbar-{{ $cardColor }}">
                         @include('components.inventoryAdd')
                         @include('components.cart')
 

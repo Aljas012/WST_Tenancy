@@ -28,7 +28,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
                         @if(strtolower($subscription) === 'free')
                         <div style="margin-right: 3rem;"> 
                             <p class="card-category">
-                                {{ count($mechanics) }} out of 3 
+                                {{ count($mechanicCount) }} out of 3 
                             </p>
                         </div>
                         @endif

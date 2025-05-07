@@ -28,7 +28,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
 
                         <div style="display:flex; justify-content: center; align-items: center; gap: 1.5rem">
                             @if(strtolower($subscription) === 'free')
-                            <p class="card-category {{ count($maintenances) >= 3 ? 'text-danger' : '' }}">
+                            <p class="card-category">
                                 {{ count($maintenances) }} out of 3
                             </p>
 
