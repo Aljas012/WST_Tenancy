@@ -32,10 +32,14 @@ class PDFController extends Controller
         $data = compact('mechanicName', 'phone', 'address', 'cars', 'products', 'dateGenerated');
 
         $pdf = PDF::loadView('reports.mechanicReports', $data);
+        
+        $safeFileName = preg_replace('/[^A-Za-z0-9\-]/', '_', $mechanicName);
+        $formattedDate = now()->setTimezone('Asia/Manila')->format('F j, Y');
+        $filename = "{$safeFileName}_Report_{$formattedDate}.pdf";
 
         Maintenance::where('mechanic_id', $mechanicId)->delete();
         Incentives::where('mechanic_id', $mechanicId)->delete();
 
-        return $pdf->download("mechanic-report.pdf");
+        return $pdf->download($filename);
     }
 }

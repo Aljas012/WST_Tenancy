@@ -48,6 +48,10 @@ Route::middleware([
     Route::resource('tenant_app', TenantAppPageController::class);
     Route::post('tenant_login', [TenantAppPageController::class, 'tenantLogin'])->name('tenant_login');
 
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
+
+    // TENANT ADMIN
     Route::middleware(['auth:tenant', 'role:admin'])->group(function () {
         Route::get('/admin', [TenantAdminDashboard::class, 'index'])->name('tenant_admin_dashboard');
         Route::get('/details/{id}', [TenantAdminDashboard::class, 'getMechanicDetails']);
@@ -83,19 +87,12 @@ Route::middleware([
 
         //ROUTE SA PDF
         Route::post('/generate-pdf', [PDFController::class, 'generatePDFReport'])->name('generate.pdf');
-
-
-
-        Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-            ->name('logout');
+        
     });
 
 
-
+    // TENANT USER
     Route::middleware(['auth:tenant', 'role:user'])->group(function () {
         Route::get('/user', [TenantUserDashboard::class, 'index'])->name('tenant_user_dashboard');
-
-        Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-            ->name('logout');
     });
 });
