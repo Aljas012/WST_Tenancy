@@ -12,9 +12,11 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     use HasDatabase, HasDomains;
 
     protected $connection = 'central';
-    
+
     protected $casts = [
         'data' => 'array',
     ];
-    
+
+    protected $guarded = [];
+
 }

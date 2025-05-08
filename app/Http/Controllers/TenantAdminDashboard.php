@@ -82,4 +82,5 @@ class TenantAdminDashboard extends Controller
             'products' => $products,
         ]);
     }
+
 }

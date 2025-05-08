@@ -17,6 +17,7 @@ use App\Http\Controllers\PDFController;
 
 use App\Http\Controllers\TenantUserDashboard;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\VersionController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 use App\Http\Middleware\PauseDomain;
 use App\Http\Middleware\UseTenantMailConfig;
+use App\Http\Middleware\CheckLatestVersion;
 
 
 /*
@@ -45,7 +47,9 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
     PauseDomain::class,
     UseTenantMailConfig::class,
+    CheckLatestVersion::class,
 ])->group(function () {
+
     Route::get('/', [TenantAppPageController::class, 'index']);
 
     Route::resource('tenant_app', TenantAppPageController::class);
@@ -58,6 +62,8 @@ Route::middleware([
     Route::middleware(['auth:tenant', 'role:admin'])->group(function () {
         Route::get('/admin', [TenantAdminDashboard::class, 'index'])->name('tenant_admin_dashboard');
         Route::get('/details/{id}', [TenantAdminDashboard::class, 'getMechanicDetails']);
+
+        Route::post('/version', [VersionController::class, 'update'])->name('version.update');
 
         // ROUTE SA MECHANIC MODULE
         Route::resource('/mechanic', MechanicController::class);

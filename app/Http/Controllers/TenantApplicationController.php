@@ -83,6 +83,7 @@ class TenantApplicationController extends Controller
             'subscription' => $tenant->subscription,
             'subscription_start_date' => $subscriptionStartDate->format('F j, Y'),
             'subscription_end_date' => $subscriptionEndDate ? $subscriptionEndDate->format('F j, Y') : null,
+            'version' => 'v1.0.0',
         ]);
 
         $newTenant->domains()->create([

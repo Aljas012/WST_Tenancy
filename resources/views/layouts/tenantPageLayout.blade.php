@@ -53,6 +53,37 @@
 
 <body class="dark-edition">
     <div class="wrapper ">
+
+        @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: "{{ session('success') }}",
+                showConfirmButton: true,
+                timer: 3000,
+                background: '#242830',
+                color: '#fff',
+
+            });
+        </script>
+        @endif
+
+        @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops!',
+                text: "{{ session('error') }}",
+                showConfirmButton: true,
+                timer: 5000,
+                background: '#242830',
+                color: '#fff',
+
+            });
+        </script>
+        @endif
+
         <div class="sidebar {{ $settings && $settings->layout === 1 ? 'sidebar-right' : 'sidebar-left' }}"
             data-color="{{ $settings->color ?? 'purple' }}"
             data-background-color="black"
@@ -63,6 +94,7 @@
                     {{ $tenant->domain }}
                 </a>
             </div>
+
             <div class="sidebar-wrapper">
                 @php
                 $menuOrder = $settings->menu_order ?? ['dashboard', 'mechanic', 'vehicle', 'maintenance', 'inventory', 'settings'];
@@ -73,8 +105,35 @@
                     @include('partials.' . $item)
                     @endforeach
                 </ul>
+
+                @php
+                $latestVersion = session('latest_version');
+                //dd(session()->all());
+                //dd($latestVersion);
+                //dd($tenant->id);
+                @endphp
+
+                <div class="text-center" style="position: absolute; bottom: 20px; width: 100%;">
+                    @if(isset($latestVersion) && version_compare($latestVersion, $tenant->version ?? 'v0.0.0', '>'))
+                    <span class="alert alert-warning" style="padding: 12px 16px;">New Version Available!</span>
+
+                    <div style="margin-top: 1.5rem;">
+                        <form action="{{ route('version.update') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="tenant_id" value="{{ $tenant->id }}" />
+                            <button type="submit" class="btn btn-warning btn-md">Update Now!</button>
+                        </form>
+                    </div>
+                    @endif
+
+                    <p class="text-white m-0" style="font-size: 14px;">
+                        {{ $tenant->version ?? 'v1.0' }}
+                    </p>
+                </div>
+
             </div>
         </div>
+
 
         <div class="main-panel">
             <!-- Navbar -->
