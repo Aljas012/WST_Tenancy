@@ -75,6 +75,8 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="margin-right: 2rem; background-color:rgb(40, 50, 75);">
+
+                                <a class="dropdown-item" href="{{ route('user_profile.index') }}" style="color:rgb(200, 200, 200)!important;">Profile </a>
                                 <a id="logoutLink" class="dropdown-item" href="" style="color:rgb(200, 200, 200)!important;">Sign Out </a>
 
                                 <form id="logoutForm" method="POST" action="{{ route('logout') }}" style="display: none;">

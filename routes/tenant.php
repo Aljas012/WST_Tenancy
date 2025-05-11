@@ -14,10 +14,14 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\IncentivesController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PDFController;
+use App\Http\Controllers\TenantProfileController;
+use App\Http\Controllers\UserTenantProfileController;
+
 
 use App\Http\Controllers\TenantUserDashboard;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\VersionController;
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -63,6 +67,7 @@ Route::middleware([
         Route::get('/admin', [TenantAdminDashboard::class, 'index'])->name('tenant_admin_dashboard');
         Route::get('/details/{id}', [TenantAdminDashboard::class, 'getMechanicDetails']);
 
+        // ROUTE SA VERSION
         Route::post('/version', [VersionController::class, 'update'])->name('version.update');
 
         // ROUTE SA MECHANIC MODULE
@@ -94,13 +99,22 @@ Route::middleware([
         Route::post('/settings/bug', [SettingsController::class, 'reportBug'])->name('settings.bug');
         Route::post('/settings/menuItem', [SettingsController::class, 'saveMenuOrder']);
 
-        //ROUTE SA PDF
+        // ROUTE SA PDF
         Route::post('/generate-pdf', [PDFController::class, 'generatePDFReport'])->name('generate.pdf');
+
+        // ROUTE SA PROFILE
+        Route::resource('/tenant_profile', TenantProfileController::class);
+        Route::post('/tenant_update_password', [TenantProfileController::class, 'updatePassword'])->name('tenant_profile.updatePassword');
     });
 
 
     // TENANT USER
     Route::middleware(['auth:tenant', 'role:user'])->group(function () {
         Route::get('/user', [TenantUserDashboard::class, 'index'])->name('tenant_user_dashboard');
+
+        
+        // ROUTE SA PROFILE
+        Route::resource('/user_profile', UserTenantProfileController::class);
+        Route::post('/user_update_password', [UserTenantProfileController::class, 'updatePassword'])->name('user_profile.updatePassword');
     });
 });

@@ -62,7 +62,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
 
                         <div class="col-12 col-md-4">
                             <div style="padding: 1rem;">
-                                <h5 style="color: #eaeaff;">Color</h5>
+                                <p style="color: #eaeaff;">Color</p>
 
                                 <div class="fixed-plugin">
                                     <a href="javascript:void(0)" class="switch-trigger active-color">
@@ -99,7 +99,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
 
                         <div class="col-12 col-md-4">
                             <div style="padding: 1rem;">
-                                <h5 style="color: #eaeaff;">Font</h5>
+                                <p style="color: #eaeaff;">Font</p>
 
                                 <div class="fixed-plugin font">
                                     <a href="javascript:void(0)" class="switch-trigger active-font" style="cursor: pointer;">
@@ -145,7 +145,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
 
                         <div class="col-12 col-md-4">
                             <div style="padding: 1rem;">
-                                <h5 style="color: #eaeaff;">Layout</h5>
+                                <p style="color: #eaeaff;">Layout</p>
 
                                 <div class="fixed-plugin layout">
                                     <a href="javascript:void(0)" class="switch-trigger active-layout">
@@ -199,7 +199,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
 
                         <div class="col-12 col-md-4">
                             <div style="padding: 1rem;">
-                                <h5 style="color: #eaeaff;">Mechanic Incentive</h5>
+                                <p style="color: #eaeaff;">Mechanic Incentive</p>
 
                                 <div style="margin-top: 1.5rem">
                                     <form action="{{ route('settings.updateIncentive') }}" method="POST">
@@ -220,7 +220,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
 
                         <div class="col-12 col-md-4">
                             <div style="padding: 1rem;">
-                                <h5 style="color: #eaeaff;">Subscription</h5>
+                                <p style="color: #eaeaff;">Subscription</p>
 
                                 <div style="margin-top: 1.5rem">
                                     <form action="{{ route('settings.upgrade') }}" method="POST">
@@ -260,7 +260,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
 
                         <div class="col-12 col-md-6">
                             <div style="padding: 1rem;">
-                                <h5 style="color: #eaeaff;">Report a Bug</h5>
+                                <p style="color: #eaeaff;">Report a Bug</p>
 
                                 <div style="margin-top: 1.5rem">
                                     <form action="{{ route('settings.bug') }}" method="POST">
@@ -282,7 +282,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
 
                         <div class="col-12 col-md-6">
                             <div style="padding: 1rem;">
-                                <h5 style="color: #eaeaff;">Developer's Contacts</h5>
+                                <p style="color: #eaeaff;">Developer's Contacts</p>
 
                                 <div style="margin-top: 1rem; padding-top: 1.5rem; display: flex; justify-content: center; gap: 6rem; flex-wrap: wrap; text-align: center;">
                                     <div>
