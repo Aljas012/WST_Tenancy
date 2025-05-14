@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Tenant;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Process;
 
 class VersionController extends Controller
 {
@@ -21,16 +23,36 @@ class VersionController extends Controller
         $tenant = Tenant::find($tenantId);
         //dd($tenant);
 
-        if ($tenant) {
-            // Update the tenant's version
+        if (!$tenant) {
+            return back()->with('error', 'Tenant not found.');
+        }
+
+        try {
+
+            $commands = [
+                'git fetch --all --tags',
+                "git checkout tags/{$latestVersion} -f",
+                'composer install --no-dev --optimize-autoloader',
+                'php artisan migrate --force',
+                'php artisan config:clear',
+                'php artisan cache:clear',
+                'php artisan route:clear',
+                'php artisan view:clear',
+            ];
+
+            $fullCommand = implode(' && ', $commands);
+
+            Process::timeout(300)->run($fullCommand, function ($type, $output) {
+                Log::info("Update Output: " . $output);
+            });
+
             $tenant->version = $latestVersion;
             $tenant->save();
 
-            return back()->with('success', 'Tenant App updated to version ' . $latestVersion);
-        } else {
-
-            return back()->with('error', 'Tenant not found.');
-            
+            return back()->with('success', "Tenant App updated to version {$latestVersion}.");
+        } catch (\Throwable $e) {
+            Log::error("Update failed: " . $e->getMessage());
+            return back()->with('error', 'Update failed: ' . $e->getMessage());
         }
     }
 }
