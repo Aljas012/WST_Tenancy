@@ -18,8 +18,6 @@ class CheckLatestVersion
      */
     public function handle($request, Closure $next)
     {
-        Log::info('✅ CheckLatestVersion middleware is running.');
-
         if (!session()->has('latest_version')) {
             try {
                 $response = Http::withoutVerifying()->get('https://api.github.com/repos/Aljas012/WST_Tenancy/releases/latest');
@@ -29,7 +27,7 @@ class CheckLatestVersion
 
                     if ($latestVersion) {
                         session(['latest_version' => $latestVersion]);
-                        session()->save(); // Force save for testing
+                        session()->save();
                         Log::info("✅ Latest version stored in session: {$latestVersion}");
                     } else {
                         Log::warning('⚠️ GitHub API returned success but no tag_name.');

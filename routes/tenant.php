@@ -112,7 +112,7 @@ Route::middleware([
     Route::middleware(['auth:tenant', 'role:user'])->group(function () {
         Route::get('/user', [TenantUserDashboard::class, 'index'])->name('tenant_user_dashboard');
 
-        
+
         // ROUTE SA PROFILE
         Route::resource('/user_profile', UserTenantProfileController::class);
         Route::post('/user_update_password', [UserTenantProfileController::class, 'updatePassword'])->name('user_profile.updatePassword');
