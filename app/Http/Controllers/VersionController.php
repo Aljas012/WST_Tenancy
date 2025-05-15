@@ -33,7 +33,7 @@ class VersionController extends Controller
             $commands = [
                 '"C:\Program Files\Git\bin\git.exe" fetch --all --tags',
                 "\"C:\Program Files\Git\bin\git.exe\" checkout tags/{$latestVersion} -f",
-                '"C:\ProgramData\ComposerSetup\bin\composer.bat" install --no-dev --optimize-autoloader',
+                'composer install --no-dev --optimize-autoloader',
                 'php artisan migrate --force',
                 'php artisan config:clear',
                 'php artisan cache:clear',
