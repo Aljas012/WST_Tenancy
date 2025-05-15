@@ -50,6 +50,7 @@ class VersionController extends Controller
             $tenant->save();
 
             return back()->with('success', "Tenant App updated to version {$latestVersion}.");
+            
         } catch (\Throwable $e) {
             Log::error("Update failed: " . $e->getMessage());
             return back()->with('error', 'Update failed: ' . $e->getMessage());
