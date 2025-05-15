@@ -36,7 +36,7 @@ class VersionController extends Controller
                 '"C:\ProgramData\ComposerSetup\bin\composer.bat" install --no-dev --optimize-autoloader',
                 'php artisan migrate --force',
                 'php artisan config:clear',
-                'php" artisan cache:clear',
+                'php artisan cache:clear',
                 'php artisan route:clear',
                 'php artisan view:clear',
             ];
