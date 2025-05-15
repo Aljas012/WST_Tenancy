@@ -34,19 +34,12 @@ class VersionController extends Controller
                 '"C:\Program Files\Git\bin\git.exe" fetch --all --tags',
                 "\"C:\Program Files\Git\bin\git.exe\" checkout tags/{$latestVersion} -f",
                 '"C:\ProgramData\ComposerSetup\bin\composer.bat" install --no-dev --optimize-autoloader',
-                '"C:\path\to\php.exe" artisan migrate --force',
-                '"C:\path\to\php.exe" artisan config:clear',
-                '"C:\path\to\php.exe" artisan cache:clear',
-                '"C:\path\to\php.exe" artisan route:clear',
-                '"C:\path\to\php.exe" artisan view:clear',
+                'php artisan migrate --force',
+                'php artisan config:clear',
+                'php" artisan cache:clear',
+                'php artisan route:clear',
+                'php artisan view:clear',
             ];
-
-            // $fullCommand = implode(' && ', $commands);
-            // //dd($fullCommand);
-
-            // // Process::timeout(300)->run($fullCommand, function ($type, $output) {
-            // //     Log::info("Update Output: " . $output);
-            // // });
 
             foreach ($commands as $command) {
                 $process = Process::fromShellCommandline($command);
@@ -56,7 +49,7 @@ class VersionController extends Controller
                 });
             }
 
-            dd($commands);
+            //dd($commands);
 
             $tenant->version = $latestVersion;
             $tenant->save();
