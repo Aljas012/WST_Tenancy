@@ -9,7 +9,8 @@ use App\Models\Tenant;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Process;
+// use Illuminate\Support\Facades\Process;
+use Symfony\Component\Process\Process;
 
 class VersionController extends Controller
 {
@@ -30,27 +31,37 @@ class VersionController extends Controller
         try {
 
             $commands = [
-                'git fetch --all --tags',
-                "git checkout tags/{$latestVersion} -f",
-                'composer install --no-dev --optimize-autoloader',
-                'php artisan migrate --force',
-                'php artisan config:clear',
-                'php artisan cache:clear',
-                'php artisan route:clear',  
-                'php artisan view:clear',
+                '"C:\Program Files\Git\bin\git.exe" fetch --all --tags',
+                "\"C:\Program Files\Git\bin\git.exe\" checkout tags/{$latestVersion} -f",
+                '"C:\ProgramData\ComposerSetup\bin\composer.bat" install --no-dev --optimize-autoloader',
+                '"C:\path\to\php.exe" artisan migrate --force',
+                '"C:\path\to\php.exe" artisan config:clear',
+                '"C:\path\to\php.exe" artisan cache:clear',
+                '"C:\path\to\php.exe" artisan route:clear',
+                '"C:\path\to\php.exe" artisan view:clear',
             ];
 
-            $fullCommand = implode(' && ', $commands);
+            // $fullCommand = implode(' && ', $commands);
+            // //dd($fullCommand);
 
-            Process::timeout(300)->run($fullCommand, function ($type, $output) {
-                Log::info("Update Output: " . $output);
-            });
+            // // Process::timeout(300)->run($fullCommand, function ($type, $output) {
+            // //     Log::info("Update Output: " . $output);
+            // // });
+
+            foreach ($commands as $command) {
+                $process = Process::fromShellCommandline($command);
+                $process->setTimeout(300);
+                $process->run(function ($type, $output) {
+                    Log::info("Command Output: " . $output);
+                });
+            }
+
+            dd($commands);
 
             $tenant->version = $latestVersion;
             $tenant->save();
 
             return back()->with('success', "Tenant App updated to version {$latestVersion}.");
-            
         } catch (\Throwable $e) {
             Log::error("Update failed: " . $e->getMessage());
             return back()->with('error', 'Update failed: ' . $e->getMessage());
