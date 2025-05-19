@@ -118,10 +118,10 @@
                     <span class="alert alert-warning" style="padding: 12px 16px;">New Version Available!</span>
 
                     <div style="margin-top: 1.5rem;">
-                        <form action="{{ route('version.update') }}" method="POST">
+                        <form id="updateVersionForm" action="{{ route('version.update') }}" method="POST">
                             @csrf
                             <input type="hidden" name="tenant_id" value="{{ $tenant->id }}" />
-                            <button type="submit" class="btn btn-warning btn-md">Update Now!</button>
+                            <button id="confirmUpdate" type="submit" class="btn btn-warning btn-md">Update Now!</button>
                         </form>
                     </div>
                     @endif
@@ -558,6 +558,25 @@
 
         });
     </script>
+
+    <script>
+        document.getElementById('confirmUpdate')?.addEventListener('click', function(e) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Update to latest version?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ffc107', // same as btn-warning
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, update it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('updateVersionForm').submit();
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>
