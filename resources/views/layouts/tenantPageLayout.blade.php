@@ -562,13 +562,15 @@
     <script>
         document.getElementById('confirmUpdate')?.addEventListener('click', function(e) {
             Swal.fire({
-                title: 'Are you sure?',
-                text: "Update to latest version?",
+                title: 'Update to Latest Version?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#ffc107', // same as btn-warning
+                background: '#242830',
+                color: '#fff',
+                confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, update it!'
+                confirmButtonText: 'Yes, update it!',
+                reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('updateVersionForm').submit();
