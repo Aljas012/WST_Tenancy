@@ -54,7 +54,7 @@
                     <div class="hero-inner ">
                         <div class="hero-copy">
                
-                            <h1 class="hero-title mt-0">DEMO, <br>{{$tenant->business}}</h1>
+                            <h1 class="hero-title mt-0">Welcome, <br>{{$tenant->business}}</h1>
                             <p class="hero-paragraph" style="text-align: justify;">Shift into high gear, track your pay, and rev up your mechanic career. See how you stack up, spot new opportunities, and take control of your earnings.</p>
 
                             <div class="hero-cta">
