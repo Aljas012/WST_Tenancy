@@ -121,7 +121,7 @@
                         <form id="updateVersionForm" action="{{ route('version.update') }}" method="POST">
                             @csrf
                             <input type="hidden" name="tenant_id" value="{{ $tenant->id }}" />
-                            <button id="confirmUpdate" type="submit" class="btn btn-warning btn-md">Update Now!</button>
+                            <button id="confirmUpdate" type="button" class="btn btn-warning btn-md">Update Now!</button>
                         </form>
                     </div>
                     @endif
