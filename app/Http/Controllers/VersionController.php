@@ -33,12 +33,12 @@ class VersionController extends Controller
             $commands = [
                 '"C:\Program Files\Git\bin\git.exe" fetch --all --tags',
                 "\"C:\Program Files\Git\bin\git.exe\" checkout tags/{$latestVersion} -f",
-                'composer install --no-dev --optimize-autoloader',
-                'php artisan migrate --force',
-                'php artisan config:clear',
-                'php artisan cache:clear',
-                'php artisan route:clear',
-                'php artisan view:clear',
+                '"C:\Users\Aljas\.config\herd-lite\bin\composer.bat" install --no-dev --optimize-autoloader',
+                '"C:\Users\Aljas\.config\herd-lite\bin\php.exe" artisan migrate --force',
+                '"C:\Users\Aljas\.config\herd-lite\bin\php.exe" artisan config:clear',
+                '"C:\Users\Aljas\.config\herd-lite\bin\php.exe" artisan cache:clear',
+                '"C:\Users\Aljas\.config\herd-lite\bin\php.exe" artisan route:clear',
+                '"C:\Users\Aljas\.config\herd-lite\bin\php.exe" artisan view:clear',
             ];
 
             foreach ($commands as $command) {
