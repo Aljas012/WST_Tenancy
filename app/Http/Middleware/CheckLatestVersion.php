@@ -28,18 +28,18 @@ class CheckLatestVersion
                     if ($latestVersion) {
                         session(['latest_version' => $latestVersion]);
                         session()->save();
-                        Log::info("✅ Latest version stored in session: {$latestVersion}");
+                        Log::info("Latest version stored in session: {$latestVersion}");
                     } else {
-                        Log::warning('⚠️ GitHub API returned success but no tag_name.');
+                        Log::warning('GitHub API returned success but no tag_name.');
                     }
                 } else {
-                    Log::error('❌ GitHub API request failed.');
+                    Log::error('GitHub API request failed.');
                 }
             } catch (\Exception $e) {
-                Log::error('❌ Exception in CheckLatestVersion middleware: ' . $e->getMessage());
+                Log::error('Exception in CheckLatestVersion middleware: ' . $e->getMessage());
             }
         } else {
-            Log::info('ℹ️ latest_version already in session.');
+            Log::info('latest_version already in session.');
         }
 
         return $next($request);

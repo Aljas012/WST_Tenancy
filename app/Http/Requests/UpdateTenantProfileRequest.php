@@ -26,7 +26,7 @@ class UpdateTenantProfileRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[A-Za-z\s]+$/',
+                'regex:/^[A-Za-z.\s]+$/'
             ],
         ];
     }

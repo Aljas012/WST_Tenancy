@@ -205,7 +205,7 @@
                                 <div class="feature text-center is-revealing">
                                     <div class="feature-inner">
                                         <div class="feature-icon">
-                                            <img class="rounded-img" src="dist/images/dawgs.jpg" alt="dev">
+                                            <img class="rounded-img" src="dist/images/dLocks.jpg" alt="dev">
                                         </div>
                                         <h4 class="feature-title mt-24">Davy Jones Locker Mercado</h4>
                                         <p class="text-sm mb-0">UI/UX Designer</p>
