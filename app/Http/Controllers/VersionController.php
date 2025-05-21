@@ -44,12 +44,13 @@ class VersionController extends Controller
             foreach ($commands as $command) {
                 $process = Process::fromShellCommandline($command);
                 $process->setTimeout(300);
+                $process->setWorkingDirectory(base_path());
                 $process->run(function ($type, $output) {
                     Log::info("Command Output: " . $output);
                 });
             }
 
-            //dd($commands);
+            dd($commands);
 
             $tenant->version = $latestVersion;
             $tenant->save();
