@@ -38,6 +38,7 @@ class VersionController extends Controller
                 "\"C:\Program Files\Git\bin\git.exe\" checkout tags/{$latestVersion} -f",
                 "\"$composerPath\" install --no-dev --optimize-autoloader",
                 "\"$phpPath\" artisan migrate --force",
+                "\"$phpPath\" artisan tenants:migrate --force",
                 "\"$phpPath\" artisan config:clear",
                 "\"$phpPath\" artisan cache:clear",
                 "\"$phpPath\" artisan route:clear",
