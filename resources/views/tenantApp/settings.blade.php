@@ -49,7 +49,7 @@ $cardColor = $colorMapping[$settings->color ?? 'purple'] ?? 'primary';
 
         <div style="display: flex; align-items: center;">
             <hr class="text-{{ $cardColor }}" style="flex: 0.1; border: none; border-top: 1px solid; margin: 0;">
-            <p class="text-{{ $cardColor}}" style="margin: 0 1rem; font-weight: bold;">UI CUSTOMIZATION</p>
+            <p class="text-{{ $cardColor}}" style="margin: 0 1rem; font-weight: bold;">UI Customization</p>
             <hr class="text-{{ $cardColor }}" style="flex: 1.5; border: none; border-top: 1px solid; margin: 0;">
         </div>
 
