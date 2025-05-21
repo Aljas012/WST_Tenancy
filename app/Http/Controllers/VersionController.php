@@ -30,15 +30,18 @@ class VersionController extends Controller
 
         try {
 
+            $phpPath = 'C:\Users\Aljas\.config\herd-lite\bin\php.exe';
+            $composerPath = 'C:\Users\Aljas\.config\herd-lite\bin\composer.bat';
+
             $commands = [
                 '"C:\Program Files\Git\bin\git.exe" fetch --all --tags',
                 "\"C:\Program Files\Git\bin\git.exe\" checkout tags/{$latestVersion} -f",
-                'composer install --no-dev --optimize-autoloader',
-                'php artisan migrate --force',
-                'php artisan config:clear',
-                'php artisan cache:clear',
-                'php artisan route:clear',
-                'php artisan view:clear',
+                "\"$composerPath\" install --no-dev --optimize-autoloader",
+                "\"$phpPath\" artisan migrate --force",
+                "\"$phpPath\" artisan config:clear",
+                "\"$phpPath\" artisan cache:clear",
+                "\"$phpPath\" artisan route:clear",
+                "\"$phpPath\" artisan view:clear",
             ];
 
             foreach ($commands as $command) {
@@ -50,7 +53,7 @@ class VersionController extends Controller
                 });
             }
 
-            dd($commands);
+            //dd($commands);
 
             $tenant->version = $latestVersion;
             $tenant->save();
