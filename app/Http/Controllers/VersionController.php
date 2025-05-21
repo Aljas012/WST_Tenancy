@@ -33,14 +33,6 @@ class VersionController extends Controller
             $phpPath = 'C:\\Users\\Aljas\\.config\\herd-lite\\bin\\php.exe';
             $composerPath = 'C:\\Users\\Aljas\\.config\\herd-lite\\bin\\composer.bat';
 
-            if (file_exists($phpPath)) {
-                Log::error("PHP path not found: $phpPath");
-            }
-
-            if (file_exists($composerPath)) {
-                Log::error("Composer path not found: $composerPath");
-            }
-
             $commands = [
                 '"C:\Program Files\Git\bin\git.exe" fetch --all --tags',
                 "\"C:\Program Files\Git\bin\git.exe\" checkout tags/{$latestVersion} -f",
